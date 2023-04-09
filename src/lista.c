@@ -19,7 +19,11 @@ struct lista_iterador {
 
 lista_t *lista_crear()
 {
-	return NULL;
+	lista_t *lista = calloc(1, sizeof(lista_t));
+	if (!lista)
+		return NULL;
+
+	return lista;
 }
 
 lista_t *lista_insertar(lista_t *lista, void *elemento)
