@@ -31,6 +31,13 @@ lista_t *lista_insertar(lista_t *lista, void *elemento)
 	if (!lista || !elemento)
 		return NULL;
 
+	nodo_t *nodo = malloc(sizeof(nodo_t));
+	if (!nodo)
+		return NULL;
+
+	nodo->elemento = elemento;
+	nodo->siguiente = NULL;
+
 	return lista;
 }
 
@@ -48,7 +55,7 @@ void *lista_quitar(lista_t *lista)
 	if (!lista)
 		return NULL;
 
-	return;
+	return NULL; 
 }
 
 void *lista_quitar_de_posicion(lista_t *lista, size_t posicion)
@@ -56,7 +63,7 @@ void *lista_quitar_de_posicion(lista_t *lista, size_t posicion)
 	if (!lista)
 		return NULL;
 
-	return;
+	return NULL;
 }
 
 void *lista_elemento_en_posicion(lista_t *lista, size_t posicion)
@@ -64,7 +71,7 @@ void *lista_elemento_en_posicion(lista_t *lista, size_t posicion)
 	if (!lista) //Comprobar posicion
 		return NULL;
 
-	return;
+	return NULL;
 }
 
 void *lista_buscar_elemento(lista_t *lista, int (*comparador)(void *, void *),
@@ -73,7 +80,7 @@ void *lista_buscar_elemento(lista_t *lista, int (*comparador)(void *, void *),
 	if (!lista || !comparador || !contexto)
 		return NULL;
 
-	return;
+	return NULL;
 }
 
 void *lista_primero(lista_t *lista)
@@ -81,7 +88,7 @@ void *lista_primero(lista_t *lista)
 	if (!lista)
 		return NULL;
 
-	return;
+	return NULL;
 }
 
 void *lista_ultimo(lista_t *lista)
@@ -89,7 +96,7 @@ void *lista_ultimo(lista_t *lista)
 	if (!lista)
 		return NULL;
 
-	return;
+	return NULL;
 }
 
 bool lista_vacia(lista_t *lista)
@@ -155,13 +162,13 @@ void *lista_iterador_elemento_actual(lista_iterador_t *iterador)
 	if (!iterador)
 		return NULL;
 
-	return;
+	return NULL;
 }
 
 void lista_iterador_destruir(lista_iterador_t *iterador)
 {
 	if (!iterador)
-		return NULL;
+		return;
 
 	return;
 }
