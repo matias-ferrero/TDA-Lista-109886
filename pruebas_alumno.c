@@ -1,17 +1,34 @@
 #include "pa2m.h"
 
-void prueba_simple()
+#include "src/lista.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+
+void pruebas_creacion_y_destruccion()
 {
-	int i = 14;
-	int j = 16;
-	pa2m_afirmar(i != j, "i=14 es diferente de j=16");
+	lista_t *lista = lista_crear();
+	pa2m_afirmar(lista != NULL, "Se puede crear una lista correctamente");
+
+	lista_destruir(lista);
+
+	return;
+}
+
+void pruebas_de_la_lista()
+{
+	pa2m_nuevo_grupo("PRUEBAS DE CREACION Y DESTRUCCION");
+	pruebas_creacion_y_destruccion();
+
+	return;
 }
 
 int main()
 {
-	pa2m_nuevo_grupo(
-		"\n======================== XXX ========================");
-	prueba_simple();
+	pa2m_nuevo_grupo("----------- PRUEBAS DEL TP: TDA-LISTA -----------");
+
+	pa2m_nuevo_grupo("--- PRUEBAS DEL TDA-LISTA ---");
+	pruebas_de_la_lista();
 
 	return pa2m_mostrar_reporte();
 }
