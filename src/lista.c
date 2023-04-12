@@ -9,6 +9,8 @@ typedef struct nodo {
 
 struct lista {
 	nodo_t *nodo_inicio;
+	nodo_t *nodo_fin;
+	size_t cantidad_nodos;
 	//algo mas?
 };
 
@@ -19,21 +21,21 @@ struct lista_iterador {
 
 lista_t *lista_crear()
 {
-	lista_t *lista = calloc(1, sizeof(lista_t));
-	if (!lista)
-		return NULL;
-
-	return lista;
+	return calloc(1, sizeof(lista_t));
 }
 
 lista_t *lista_insertar(lista_t *lista, void *elemento)
 {
-	if (!lista || !elemento)
+	if (!lista)
 		return NULL;
 
 	nodo_t *nodo = malloc(sizeof(nodo_t));
 	if (!nodo)
 		return NULL;
+
+	lista->nodo_fin->siguiente = nodo;
+	lista->nodo_fin = nodo;
+	lista->cantidad_nodos++;
 
 	nodo->elemento = elemento;
 	nodo->siguiente = NULL;
@@ -46,7 +48,25 @@ lista_t *lista_insertar_en_posicion(lista_t *lista, void *elemento,
 {
 	if (!lista || !elemento)
 		return NULL;
+/*
+	if (posicion == 0) {
+		nodo_t *nodo = malloc(sizeof(nodo_t));
+		if (!nodo)
+			return NULL;
 
+		lista->nodo_inicio = nodo;
+		nodo->elemento = elemento;
+		nodo->siguiente = NULL;
+		lista->cantidad_nodos++;
+	} else if (posicion > 0 && posicion < lista->cantidad_nodos) {
+		nodo_t *nodo = malloc(sizeof(nodo_t));
+		if (!nodo)
+			return NULL;
+		nodo->elemento = elemento;
+		nodo->siguiente = NULL;
+		lista->cantidad_nodos++;
+	}
+*/
 	return lista;
 }
 
