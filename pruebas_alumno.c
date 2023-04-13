@@ -10,6 +10,12 @@ void pruebas_creacion_y_destruccion()
 	lista_t *lista = lista_crear();
 	pa2m_afirmar(lista != NULL, "Se puede crear una lista correctamente");
 
+	void *elemento = (void*)0x1234;
+	pa2m_afirmar(lista_insertar(lista, elemento) != NULL,
+		     "Se puede insertar un elemento al final de la lista");
+	pa2m_afirmar(lista_insertar(lista, NULL) != NULL,
+		     "Se puede insertar NULL al final de la lista");
+
 	lista_destruir(lista);
 
 	return;

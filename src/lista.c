@@ -29,16 +29,20 @@ lista_t *lista_insertar(lista_t *lista, void *elemento)
 	if (!lista)
 		return NULL;
 
-	nodo_t *nodo = malloc(sizeof(nodo_t));
+	nodo_t *nodo = calloc(1, sizeof(nodo_t));
 	if (!nodo)
 		return NULL;
 
-	lista->nodo_fin->siguiente = nodo;
-	lista->nodo_fin = nodo;
+	if (lista->cantidad_nodos == 0) {	//Caso lista vacia
+		lista->nodo_inicio = nodo;
+		lista->nodo_fin = nodo;
+	} else {				//Caso lista NO vacia
+		lista->nodo_fin->siguiente = nodo;
+		lista->nodo_fin = nodo;
+	}
 	lista->cantidad_nodos++;
 
 	nodo->elemento = elemento;
-	nodo->siguiente = NULL;
 
 	return lista;
 }
@@ -105,23 +109,23 @@ void *lista_buscar_elemento(lista_t *lista, int (*comparador)(void *, void *),
 
 void *lista_primero(lista_t *lista)
 {
-	if (!lista)
+	if (!lista || lista->cantidad_nodos == 0)
 		return NULL;
 
-	return NULL;
+	return lista->nodo_inicio;
 }
 
 void *lista_ultimo(lista_t *lista)
 {
-	if (!lista)
+	if (!lista || lista->cantidad_nodos == 0)
 		return NULL;
 
-	return NULL;
+	return lista->nodo_fin;
 }
 
 bool lista_vacia(lista_t *lista)
 {
-	if (!lista)
+	if (!lista || lista->cantidad_nodos == 0)
 		return true;
 
 	return false;
@@ -132,13 +136,20 @@ size_t lista_tamanio(lista_t *lista)
 	if (!lista)
 		return 0;
 
-	return 0;
+	return lista->cantidad_nodos;
 }
 
 void lista_destruir(lista_t *lista)
 {
 	if (!lista)
 		return;
+
+	while (lista->cantidad_nodos != 0) {
+		nodo_t *nodo_aux = lista->nodo_inicio->siguiente;
+		free(lista->nodo_inicio);
+		lista->nodo_inicio = nodo_aux;
+		lista->cantidad_nodos--;
+	}
 
 	free(lista);
 
@@ -149,6 +160,16 @@ void lista_destruir_todo(lista_t *lista, void (*funcion)(void *))
 {
 	if (!lista || !funcion)
 		return;
+
+	while (lista->cantidad_nodos != 0) {
+		nodo_t *nodo_aux = lista->nodo_inicio->siguiente;
+		funcion(lista->nodo_inicio->elemento);
+		free(lista->nodo_inicio);
+		lista->nodo_inicio = nodo_aux;
+		lista->cantidad_nodos--;
+	}
+
+	free(lista);
 
 	return;
 }
