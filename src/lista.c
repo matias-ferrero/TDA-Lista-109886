@@ -50,27 +50,29 @@ lista_t *lista_insertar(lista_t *lista, void *elemento)
 lista_t *lista_insertar_en_posicion(lista_t *lista, void *elemento,
 				    size_t posicion)
 {
-	if (!lista || !elemento)
+	if (!lista)
 		return NULL;
-/*
-	if (posicion == 0) {
-		nodo_t *nodo = malloc(sizeof(nodo_t));
+
+	nodo_t *nodo = calloc(1, sizeof(nodo_t));
 		if (!nodo)
 			return NULL;
 
+	if (posicion == 0) {
+		nodo->siguiente=lista->nodo_inicio->siguiente;
 		lista->nodo_inicio = nodo;
 		nodo->elemento = elemento;
-		nodo->siguiente = NULL;
 		lista->cantidad_nodos++;
 	} else if (posicion > 0 && posicion < lista->cantidad_nodos) {
-		nodo_t *nodo = malloc(sizeof(nodo_t));
-		if (!nodo)
-			return NULL;
+		nodo->siguiente = lista->nodo_inicio->siguiente;
+		lista->nodo_inicio->siguiente = nodo;
 		nodo->elemento = elemento;
-		nodo->siguiente = NULL;
+		lista->cantidad_nodos++;
+	} else {
+		lista->nodo_fin->siguiente = nodo;
+		lista->nodo_fin = nodo;
 		lista->cantidad_nodos++;
 	}
-*/
+
 	return lista;
 }
 
