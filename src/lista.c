@@ -58,38 +58,62 @@ lista_t *lista_insertar_en_posicion(lista_t *lista, void *elemento,
 			return NULL;
 
 	if (posicion == 0) {
-		nodo->siguiente=lista->nodo_inicio->siguiente;
+		nodo->siguiente = lista->nodo_inicio->siguiente;
 		lista->nodo_inicio = nodo;
-		nodo->elemento = elemento;
-		lista->cantidad_nodos++;
-	} else if (posicion > 0 && posicion < lista->cantidad_nodos) {
+	} else if (posicion < lista->cantidad_nodos) {
 		nodo->siguiente = lista->nodo_inicio->siguiente;
 		lista->nodo_inicio->siguiente = nodo;
-		nodo->elemento = elemento;
-		lista->cantidad_nodos++;
-	} else {
+	} else 
 		lista->nodo_fin->siguiente = nodo;
+
+	if (!nodo->siguiente)
 		lista->nodo_fin = nodo;
-		lista->cantidad_nodos++;
-	}
+
+	nodo->elemento = elemento;
+	lista->cantidad_nodos++;
 
 	return lista;
 }
 
+nodo_t *buscador_anteultimo_nodo(lista_t *lista, nodo_t *nodo)
+{
+	if (!nodo->siguiente != lista->nodo_fin)
+		nodo = buscador_anteultimo_nodo(lista, nodo->siguiente);
+	
+	return nodo;
+}
+
 void *lista_quitar(lista_t *lista)
 {
-	if (!lista)
+	if (!lista || !lista->nodo_inicio)
 		return NULL;
+	
+	nodo_t *nodo = lista->nodo_fin;;
 
-	return NULL; 
+	if (lista->nodo_inicio == lista->nodo_fin) {
+		lista->nodo_inicio = NULL;
+		lista->nodo_fin = NULL;
+	} else {
+		nodo_t *nuevo_ultimo_nodo = 
+			buscador_anteultimo_nodo(lista, lista->nodo_inicio);
+		lista->nodo_fin = nuevo_ultimo_nodo;
+		nuevo_ultimo_nodo->siguiente = NULL;
+	}
+	lista->cantidad_nodos--;
+	return nodo; 
 }
 
 void *lista_quitar_de_posicion(lista_t *lista, size_t posicion)
 {
-	if (!lista)
+	if (!lista || lista_vacia(lista))
 		return NULL;
 
-	return NULL;
+	nodo_t *nodo = NULL;
+
+	if (posicion > 0 && posicion < (lista->cantidad_nodos -1)) {		
+	}
+
+	return nodo;
 }
 
 void *lista_elemento_en_posicion(lista_t *lista, size_t posicion)
