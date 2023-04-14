@@ -75,11 +75,13 @@ lista_t *lista_insertar_en_posicion(lista_t *lista, void *elemento,
 	return lista;
 }
 
-nodo_t *buscador_anteultimo_nodo(lista_t *lista, nodo_t *nodo)
+nodo_t *buscar_nodo_anterior_a_quitar(nodo_t *nodo, size_t posicion_en_lista,
+					 size_t posicion_buscada)
 {
-	if (!nodo->siguiente != lista->nodo_fin)
-		nodo = buscador_anteultimo_nodo(lista, nodo->siguiente);
-	
+	if (posicion_buscada != posicion_en_lista)
+		nodo = buscar_nodo_anterior_a_quitar(nodo->siguiente,
+			 posicion_en_lista++, posicion_buscada);
+
 	return nodo;
 }
 
@@ -95,7 +97,8 @@ void *lista_quitar(lista_t *lista)
 		lista->nodo_fin = NULL;
 	} else {
 		nodo_t *nuevo_ultimo_nodo = 
-			buscador_anteultimo_nodo(lista, lista->nodo_inicio);
+			buscar_nodo_anterior_a_quitar(lista->nodo_inicio,
+			 0, lista->cantidad_nodos - 2);
 		lista->nodo_fin = nuevo_ultimo_nodo;
 		nuevo_ultimo_nodo->siguiente = NULL;
 	}
@@ -109,9 +112,20 @@ void *lista_quitar_de_posicion(lista_t *lista, size_t posicion)
 		return NULL;
 
 	nodo_t *nodo = NULL;
-
-	if (posicion > 0 && posicion < (lista->cantidad_nodos -1)) {		
+	if (lista->nodo_inicio == lista->nodo_fin ||	//Unico elemento en la lista o ultima posicion
+		 posicion >= (lista->cantidad_nodos - 1)) 
+		nodo = lista_quitar(lista);
+	else if (posicion == 0) {			//Primera posicion
+		nodo = lista->nodo_inicio;
+		lista->nodo_inicio = nodo->siguiente;
+	} else {
+		nodo_t *nodo_anterior_a_quitar =	//Todas las posiciones restantes
+		 buscar_nodo_anterior_a_quitar(lista->nodo_inicio, 0, posicion--);
+		nodo = nodo_anterior_a_quitar->siguiente;
+		nodo_anterior_a_quitar->siguiente = nodo->siguiente;
 	}
+
+	lista->cantidad_nodos--;
 
 	return nodo;
 }
@@ -138,7 +152,7 @@ void *lista_primero(lista_t *lista)
 	if (!lista || lista->cantidad_nodos == 0)
 		return NULL;
 
-	return lista->nodo_inicio;
+	return lista->nodo_inicio->elemento;
 }
 
 void *lista_ultimo(lista_t *lista)
@@ -146,7 +160,7 @@ void *lista_ultimo(lista_t *lista)
 	if (!lista || lista->cantidad_nodos == 0)
 		return NULL;
 
-	return lista->nodo_fin;
+	return lista->nodo_fin->elemento;
 }
 
 bool lista_vacia(lista_t *lista)
