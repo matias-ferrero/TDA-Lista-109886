@@ -33,13 +33,12 @@ lista_t *lista_insertar(lista_t *lista, void *elemento)
 	if (!nodo)
 		return NULL;
 
-	if (lista->cantidad_nodos == 0) {	//Caso lista vacia
+	if (lista->cantidad_nodos == 0)
 		lista->nodo_inicio = nodo;
-		lista->nodo_fin = nodo;
-	} else {				//Caso lista NO vacia
+	else
 		lista->nodo_fin->siguiente = nodo;
-		lista->nodo_fin = nodo;
-	}
+
+	lista->nodo_fin = nodo;
 	lista->cantidad_nodos++;
 
 	nodo->elemento = elemento;
@@ -54,11 +53,11 @@ lista_t *lista_insertar_en_posicion(lista_t *lista, void *elemento,
 		return NULL;
 
 	nodo_t *nodo = calloc(1, sizeof(nodo_t));
-		if (!nodo)
-			return NULL;
+	if (!nodo)
+		return NULL;
 
 	if (posicion == 0) {
-		nodo->siguiente = lista->nodo_inicio->siguiente;
+		nodo->siguiente = lista->nodo_inicio;
 		lista->nodo_inicio = nodo;
 	} else if (posicion < lista->cantidad_nodos) {
 		nodo->siguiente = lista->nodo_inicio->siguiente;
@@ -69,14 +68,15 @@ lista_t *lista_insertar_en_posicion(lista_t *lista, void *elemento,
 	if (!nodo->siguiente)
 		lista->nodo_fin = nodo;
 
-	nodo->elemento = elemento;
 	lista->cantidad_nodos++;
+
+	nodo->elemento = elemento;
 
 	return lista;
 }
 
 nodo_t *buscar_nodo_anterior_a_quitar(nodo_t *nodo, size_t posicion_en_lista,
-					 size_t posicion_buscada)
+				      size_t posicion_buscada)
 {
 	if (posicion_buscada != posicion_en_lista)
 		nodo = buscar_nodo_anterior_a_quitar(nodo->siguiente,
