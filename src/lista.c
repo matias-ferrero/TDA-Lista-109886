@@ -89,8 +89,9 @@ void *lista_quitar(lista_t *lista)
 {
 	if (!lista || lista_vacia(lista))
 		return NULL;
-	
-	nodo_t *nodo = lista->nodo_fin;;
+
+	nodo_t *nodo = lista->nodo_fin;
+	void *elemento = lista->nodo_fin->elemento;
 
 	if (lista->nodo_inicio == lista->nodo_fin) {
 		lista->nodo_inicio = NULL;
@@ -104,8 +105,9 @@ void *lista_quitar(lista_t *lista)
 	}
 
 	lista->cantidad_nodos--;
+	free(nodo);
 
-	return nodo->elemento; 
+	return elemento; 
 }
 
 void *lista_quitar_de_posicion(lista_t *lista, size_t posicion)
@@ -114,8 +116,10 @@ void *lista_quitar_de_posicion(lista_t *lista, size_t posicion)
 		return NULL;
 
 	nodo_t *nodo = NULL;
+	void *elemento = NULL;
+
 	if (lista->nodo_inicio == lista->nodo_fin ||	//Unico elemento en la lista o ultima posicion
-		 posicion >= (lista->cantidad_nodos - 1)) 
+	    posicion >= (lista->cantidad_nodos - 1)) 
 		nodo = lista_quitar(lista);
 	else if (posicion == 0) {			//Primera posicion
 		nodo = lista->nodo_inicio;
@@ -128,8 +132,10 @@ void *lista_quitar_de_posicion(lista_t *lista, size_t posicion)
 	}
 
 	lista->cantidad_nodos--;
+	elemento = nodo->elemento;
+	free(nodo);
 
-	return nodo->elemento;
+	return elemento;
 }
 
 void *lista_elemento_en_posicion(lista_t *lista, size_t posicion)
