@@ -29,7 +29,15 @@ void pruebas_parametros_invalidos()
 		     "No se puede insertar un elemento a una lista que no existe");
 
 	pa2m_afirmar(lista_insertar_en_posicion(NULL, elemento, 0) == NULL,
-		     "No se puede insertar en cualquier posicion a una lista que no existe");
+		     "No se puede insertar un elemento en cualquier posicion a una lista que no existe");
+
+	pa2m_afirmar(lista_quitar(NULL) == NULL, 
+		     "No se puede quitar un elemento de una lista que no existe");
+
+	pa2m_afirmar(lista_quitar_de_posicion(NULL, 0) == NULL,
+		     "No se puede quitar un elemento de cualquier posicion de una lista que no existe");
+
+	return;
 }
 
 void pruebas_insertar_al_final()
@@ -108,6 +116,13 @@ void pruebas_insertar_en_cualquier_posicion()
 
 void pruebas_quitar_al_final()
 {
+	lista_t *lista = lista_crear();
+
+	pa2m_afirmar(lista_quitar(lista) == NULL,
+		     "No se pueden quitar elementos de una lista vacia");
+
+	lista_destruir(lista);
+
 	return;
 }
 

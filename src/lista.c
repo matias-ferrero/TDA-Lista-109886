@@ -87,7 +87,7 @@ nodo_t *buscar_nodo_anterior_a_quitar(nodo_t *nodo, size_t posicion_en_lista,
 
 void *lista_quitar(lista_t *lista)
 {
-	if (!lista || !lista->nodo_inicio)
+	if (!lista || lista_vacia(lista))
 		return NULL;
 	
 	nodo_t *nodo = lista->nodo_fin;;
