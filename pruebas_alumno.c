@@ -10,10 +10,8 @@ void pruebas_creacion_y_destruccion()
 	lista_t *lista = lista_crear();
 	pa2m_afirmar(lista != NULL, "Se puede crear una lista correctamente");
 
-	pa2m_afirmar(lista_tamanio(lista) == 0 &&
-	 	     lista_primero(lista) == NULL &&
-	 	     lista_ultimo(lista) == NULL &&
-		     lista_vacia(lista) == true,
+	pa2m_afirmar(lista_tamanio(lista) == 0 && !lista_primero(lista) &&
+	 	     !lista_ultimo(lista) && lista_vacia(lista),
 	  	     "La lista esta vacia");
 
 	lista_destruir(lista);
@@ -25,16 +23,16 @@ void pruebas_parametros_invalidos()
 {
 	void *elemento = (void*)0x1234;
 
-	pa2m_afirmar(lista_insertar(NULL, elemento) == NULL,
+	pa2m_afirmar(!lista_insertar(NULL, elemento),
 		     "No se puede insertar un elemento a una lista que no existe");
 
-	pa2m_afirmar(lista_insertar_en_posicion(NULL, elemento, 0) == NULL,
+	pa2m_afirmar(!lista_insertar_en_posicion(NULL, elemento, 0),
 		     "No se puede insertar un elemento en cualquier posicion a una lista que no existe");
 
-	pa2m_afirmar(lista_quitar(NULL) == NULL, 
+	pa2m_afirmar(!lista_quitar(NULL), 
 		     "No se puede quitar un elemento de una lista que no existe");
 
-	pa2m_afirmar(lista_quitar_de_posicion(NULL, 0) == NULL,
+	pa2m_afirmar(!lista_quitar_de_posicion(NULL, 0),
 		     "No se puede quitar un elemento de cualquier posicion de una lista que no existe");
 
 	return;
@@ -118,8 +116,30 @@ void pruebas_quitar_al_final()
 {
 	lista_t *lista = lista_crear();
 
-	pa2m_afirmar(lista_quitar(lista) == NULL,
+	pa2m_afirmar(!lista_quitar(lista),
 		     "No se pueden quitar elementos de una lista vacia");
+
+	void *elemento1 = (void*)0x1234;
+	void *elemento2 = (void*)0x4321;
+
+	lista_insertar(lista, elemento1);
+	lista_insertar(lista, elemento2);
+
+	pa2m_afirmar(lista_quitar(lista) == elemento2,
+		     "Se pueden quitar elementos del final de la lista");
+
+	pa2m_afirmar(lista_ultimo(lista) == elemento1 &&
+		     lista_tamanio(lista) == 1, "Se reajusta bien la lista");
+
+
+	pa2m_afirmar(lista_quitar(lista) == elemento1,
+		     "Se pueden quitar elementos de una lista con un solo elemento");
+
+	pa2m_afirmar(lista_tamanio(lista) == 0 && lista_vacia(lista),
+		     "Se eliminan todos los elementos y la lista queda vacia");
+		     
+	pa2m_afirmar(!lista_primero(lista) && !lista_ultimo(lista),
+		     "Se reajusta bien la lista vacia");
 
 	lista_destruir(lista);
 
@@ -128,6 +148,27 @@ void pruebas_quitar_al_final()
 
 void pruebas_quitar_en_cualquier_posicion()
 {
+	lista_t *lista = lista_crear();
+
+	pa2m_afirmar(!lista_quitar_de_posicion(lista, 0),
+		     "No se pueden quitar elementos de cualquier posicion de una lista vacia");
+
+	void *elemento1 = (void*)0x1234;
+	void *elemento2 = (void*)0x4321;
+	void *elemento3 = (void*)0x1234;
+	void *elemento4 = (void*)0x4321;
+
+	lista_insertar(lista, elemento1);
+	lista_insertar(lista, elemento2);
+	lista_insertar(lista, elemento3);
+	lista_insertar(lista, elemento4);
+	lista_insertar(lista, NULL);
+
+	pa2m_afirmar(lista_quitar_de_posicion(lista,4) == elemento4,
+		     "Se pueden quitar elementos del medio de la lista");
+
+	lista_destruir(lista);
+
 	return;
 }
 

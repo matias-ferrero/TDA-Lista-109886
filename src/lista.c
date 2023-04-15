@@ -102,8 +102,10 @@ void *lista_quitar(lista_t *lista)
 		lista->nodo_fin = nuevo_ultimo_nodo;
 		nuevo_ultimo_nodo->siguiente = NULL;
 	}
+
 	lista->cantidad_nodos--;
-	return nodo; 
+
+	return nodo->elemento; 
 }
 
 void *lista_quitar_de_posicion(lista_t *lista, size_t posicion)
@@ -127,7 +129,7 @@ void *lista_quitar_de_posicion(lista_t *lista, size_t posicion)
 
 	lista->cantidad_nodos--;
 
-	return nodo;
+	return nodo->elemento;
 }
 
 void *lista_elemento_en_posicion(lista_t *lista, size_t posicion)
