@@ -11,7 +11,6 @@ struct lista {
 	nodo_t *nodo_inicio;
 	nodo_t *nodo_fin;
 	size_t cantidad_nodos;
-	//algo mas?
 };
 
 struct lista_iterador {
@@ -80,7 +79,8 @@ nodo_t *buscar_nodo_anterior_a_quitar(nodo_t *nodo, size_t posicion_en_lista,
 {
 	if (posicion_buscada != posicion_en_lista)
 		nodo = buscar_nodo_anterior_a_quitar(nodo->siguiente,
-			 posicion_en_lista++, posicion_buscada);
+			 			     posicion_en_lista++,
+						     posicion_buscada);
 
 	return nodo;
 }
@@ -140,10 +140,13 @@ void *lista_quitar_de_posicion(lista_t *lista, size_t posicion)
 
 void *lista_elemento_en_posicion(lista_t *lista, size_t posicion)
 {
-	if (!lista) //Comprobar posicion
+	if (!lista || posicion >= lista->cantidad_nodos)
 		return NULL;
 
-	return NULL;
+	nodo_t *nodo = buscar_nodo_anterior_a_quitar(lista->nodo_inicio, 0,
+						     posicion);
+	
+	return nodo->elemento;
 }
 
 void *lista_buscar_elemento(lista_t *lista, int (*comparador)(void *, void *),

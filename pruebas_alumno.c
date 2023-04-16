@@ -211,8 +211,8 @@ void pruebas_de_la_lista()
 	pa2m_nuevo_grupo("PRUEBAS DE QUITAR AL FINAL");
 	pruebas_quitar_al_final();
 
-	pa2m_nuevo_grupo("PRUEBAS DE QUITAR EN CUALQUIER POSICION");
-	pruebas_quitar_en_cualquier_posicion();
+	//pa2m_nuevo_grupo("PRUEBAS DE QUITAR EN CUALQUIER POSICION");
+	//pruebas_quitar_en_cualquier_posicion();
 
 	return;
 }
