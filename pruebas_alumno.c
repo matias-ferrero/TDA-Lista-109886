@@ -35,12 +35,16 @@ void pruebas_parametros_invalidos()
 	pa2m_afirmar(!lista_quitar_de_posicion(NULL, 0),
 		     "No se puede quitar un elemento de cualquier posicion de una lista que no existe");
 
+	pa2m_afirmar(!lista_elemento_en_posicion(NULL, 0),
+		     "No se puede buscar un elemento de cualquier posicion de una lista que no existe");
+
 	return;
 }
 
 void pruebas_insertar_al_final()
 {
 	lista_t *lista = lista_crear();
+
 	void *elemento1 = (void*)0x1234;
 	void *elemento2 = (void*)0x4321;
 
@@ -197,6 +201,26 @@ void pruebas_buscar_por_posicion()
 {
 	lista_t *lista = lista_crear();
 
+	pa2m_afirmar(lista_elemento_en_posicion(lista, 0) == NULL,
+		     "No se pueden buscar elementos de una lista vacia");
+
+	void *elemento1 = (void*)0x1234;
+	void *elemento2 = (void*)0x4321;
+	void *elemento3 = (void*)0x1234;
+
+	lista_insertar_en_posicion(lista, elemento1, 0);
+	lista_insertar_en_posicion(lista, elemento2, 1);
+	lista_insertar_en_posicion(lista, elemento3, 2);
+
+	pa2m_afirmar(lista_elemento_en_posicion(lista, 0) == elemento1, 
+		     "Se puede encontrar el primer elemento de la lista");
+
+	pa2m_afirmar(lista_elemento_en_posicion(lista, 1) == elemento2, 
+		     "Se pueden encontrar elementos en el medio de la lista");
+
+	pa2m_afirmar(lista_elemento_en_posicion(lista, 2) == elemento3, 
+		     "Se puede encontrar el ultimo elemento de la lista");
+
 	lista_destruir(lista);
 
 	return;
@@ -235,7 +259,7 @@ void pruebas_de_la_lista()
 	pruebas_buscar_por_posicion();
 
 	pa2m_nuevo_grupo("PRUEBAS DE BUSCAR ELEMENTOS POR CONDICION");
-	pruebas_buscar_por_posicion();
+	pruebas_buscar_por_condicion();
 
 	return;
 }
