@@ -79,7 +79,7 @@ nodo_t *buscar_nodo_anterior_a_quitar(nodo_t *nodo, size_t posicion_en_lista,
 {
 	if (posicion_buscada != posicion_en_lista)
 		nodo = buscar_nodo_anterior_a_quitar(nodo->siguiente,
-			 			     posicion_en_lista++,
+			 			     posicion_en_lista + 1,
 						     posicion_buscada);
 
 	return nodo;
@@ -118,15 +118,17 @@ void *lista_quitar_de_posicion(lista_t *lista, size_t posicion)
 	nodo_t *nodo = NULL;
 	void *elemento = NULL;
 
-	if (lista->nodo_inicio == lista->nodo_fin ||	//Unico elemento en la lista o ultima posicion
-	    posicion >= (lista->cantidad_nodos - 1)) 
-		nodo = lista_quitar(lista);
-	else if (posicion == 0) {			//Primera posicion
+	if (lista_tamanio(lista) == 1 || posicion >=
+	    (lista_tamanio(lista) - 1))
+		return lista_quitar(lista);
+
+	if (posicion == 0) {
 		nodo = lista->nodo_inicio;
 		lista->nodo_inicio = nodo->siguiente;
 	} else {
-		nodo_t *nodo_anterior_a_quitar =	//Todas las posiciones restantes
-		 buscar_nodo_anterior_a_quitar(lista->nodo_inicio, 0, posicion--);
+		nodo_t *nodo_anterior_a_quitar =
+		 	buscar_nodo_anterior_a_quitar(lista->nodo_inicio, 0,
+		 			       	      posicion - 1);
 		nodo = nodo_anterior_a_quitar->siguiente;
 		nodo_anterior_a_quitar->siguiente = nodo->siguiente;
 	}

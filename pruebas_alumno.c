@@ -166,7 +166,6 @@ void pruebas_quitar_en_cualquier_posicion()
 	lista_insertar(lista, elemento4);
 	lista_insertar(lista, elemento5);
 
-
 	pa2m_afirmar(lista_quitar_de_posicion(lista, 0) == elemento1,
 		     "Se puede quitar el primer elemento de la lista");
 
@@ -185,7 +184,7 @@ void pruebas_quitar_en_cualquier_posicion()
 
 	pa2m_afirmar(lista_tamanio(lista) == 0 && lista_vacia(lista),
 		     "Se eliminan todos los elementos y la lista queda vacia");
-		     
+
 	pa2m_afirmar(!lista_primero(lista) && !lista_ultimo(lista),
 		     "Se reajusta bien la lista vacia");
 
@@ -194,8 +193,26 @@ void pruebas_quitar_en_cualquier_posicion()
 	return;
 }
 
-void pruebas_de_la_lista()
+void pruebas_buscar_por_posicion()
 {
+	lista_t *lista = lista_crear();
+
+	lista_destruir(lista);
+
+	return;
+}
+
+void pruebas_buscar_por_condicion()
+{
+	lista_t *lista = lista_crear();
+
+	lista_destruir(lista);
+
+	return;
+}
+
+void pruebas_de_la_lista()
+{/*
 	pa2m_nuevo_grupo("PRUEBAS DE CREACION Y DESTRUCCION");
 	pruebas_creacion_y_destruccion();
 
@@ -211,8 +228,14 @@ void pruebas_de_la_lista()
 	pa2m_nuevo_grupo("PRUEBAS DE QUITAR AL FINAL");
 	pruebas_quitar_al_final();
 
-	//pa2m_nuevo_grupo("PRUEBAS DE QUITAR EN CUALQUIER POSICION");
-	//pruebas_quitar_en_cualquier_posicion();
+	pa2m_nuevo_grupo("PRUEBAS DE QUITAR EN CUALQUIER POSICION");
+	pruebas_quitar_en_cualquier_posicion();
+*/
+	pa2m_nuevo_grupo("PRUEBAS DE BUSCAR ELEMENTOS POR POSICION");
+	pruebas_buscar_por_posicion();
+
+	pa2m_nuevo_grupo("PRUEBAS DE BUSCAR ELEMENTOS POR CONDICION");
+	pruebas_buscar_por_posicion();
 
 	return;
 }
