@@ -5,12 +5,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+int comparador(void *elemento, void*contexto)
+{
+	return 0;
+}
+
+
 void pruebas_creacion_y_destruccion()
 {
 	lista_t *lista = lista_crear();
 	pa2m_afirmar(lista != NULL, "Se puede crear una lista correctamente");
 
-	pa2m_afirmar(lista_tamanio(lista) == 0 && !lista_primero(lista) &&
+	pa2m_afirmar(!lista_tamanio(lista) && !lista_primero(lista) &&
 	 	     !lista_ultimo(lista) && lista_vacia(lista),
 	  	     "La lista esta vacia");
 
@@ -21,7 +27,10 @@ void pruebas_creacion_y_destruccion()
 
 void pruebas_parametros_invalidos()
 {
+	lista_t *lista = lista_crear();
+
 	void *elemento = (void*)0x1234;
+	void *contexto = (void*)0x4321;
 
 	pa2m_afirmar(!lista_insertar(NULL, elemento),
 		     "No se puede insertar un elemento a una lista que no existe");
@@ -37,6 +46,14 @@ void pruebas_parametros_invalidos()
 
 	pa2m_afirmar(!lista_elemento_en_posicion(NULL, 0),
 		     "No se puede buscar un elemento de cualquier posicion de una lista que no existe");
+
+	pa2m_afirmar(!lista_buscar_elemento(NULL, comparador, contexto),
+		     "No se puede buscar un elemento con cualquier condicion de una lista que no existe");
+
+	pa2m_afirmar(!lista_buscar_elemento(lista, NULL, elemento),
+		     "No se puede buscar un elemento de una lista con una funcion comparador que no existe");
+
+	lista_destruir(lista);
 
 	return;
 }
@@ -140,7 +157,7 @@ void pruebas_quitar_al_final()
 	pa2m_afirmar(lista_quitar(lista) == elemento1,
 		     "Se pueden quitar elementos de una lista con un solo elemento");
 
-	pa2m_afirmar(lista_tamanio(lista) == 0 && lista_vacia(lista),
+	pa2m_afirmar(!lista_tamanio(lista) && lista_vacia(lista),
 		     "Se eliminan todos los elementos y la lista queda vacia");
 		     
 	pa2m_afirmar(!lista_primero(lista) && !lista_ultimo(lista),
@@ -186,7 +203,7 @@ void pruebas_quitar_en_cualquier_posicion()
 		     "Se puede quitar el unico elemento de la lista");
 
 
-	pa2m_afirmar(lista_tamanio(lista) == 0 && lista_vacia(lista),
+	pa2m_afirmar(!lista_tamanio(lista) && lista_vacia(lista),
 		     "Se eliminan todos los elementos y la lista queda vacia");
 
 	pa2m_afirmar(!lista_primero(lista) && !lista_ultimo(lista),
@@ -229,6 +246,11 @@ void pruebas_buscar_por_posicion()
 void pruebas_buscar_por_condicion()
 {
 	lista_t *lista = lista_crear();
+
+	void *contexto = (void*)0x4321;
+
+	pa2m_afirmar(!lista_buscar_elemento(lista, comparador, contexto),
+		     "No se puede buscar un elemento con cualquier condicion de una lista vacia");
 
 	lista_destruir(lista);
 

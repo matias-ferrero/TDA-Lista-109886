@@ -154,9 +154,18 @@ void *lista_elemento_en_posicion(lista_t *lista, size_t posicion)
 void *lista_buscar_elemento(lista_t *lista, int (*comparador)(void *, void *),
 			    void *contexto)
 {
-	if (!lista || !comparador || !contexto)
+	if (!lista || !comparador || lista_vacia(lista))
 		return NULL;
 
+	nodo_t *nodo = lista->nodo_inicio;
+
+	for (size_t i = 0; i < lista_tamanio(lista); i++) {
+		if (!comparador(nodo->elemento, contexto))
+			return nodo->elemento;
+		
+		nodo = nodo->siguiente;
+	}
+	
 	return NULL;
 }
 
