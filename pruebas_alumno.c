@@ -90,6 +90,32 @@ void pruebas_insertar_al_final()
 	lista_destruir(lista);
 }
 
+void pruebas_leer_lista()
+{
+	lista_t *lista = lista_crear();
+
+	void *elemento1 = (void*)0x1234;
+	void *elemento2 = (void*)0x4321;
+
+	lista_insertar(lista, elemento1);
+	lista_insertar(lista, elemento2);
+
+	pa2m_afirmar(!lista_vacia(lista), "La lista no esta vacia");
+
+	pa2m_afirmar(lista_tamanio(lista) == 2,
+		     "La lista tiene dos elementos");
+	
+	pa2m_afirmar(lista_primero(lista) == elemento1,
+		     "Se puede leer el primer elemento de la lista");
+
+	pa2m_afirmar(lista_ultimo(lista) == elemento2,
+		     "Se puede leer el ultimo elemento de la lista");
+
+	lista_destruir(lista);
+
+	return;
+}
+
 void pruebas_insertar_en_cualquier_posicion()
 {
 	lista_t *lista = lista_crear();
@@ -286,6 +312,9 @@ void pruebas_de_la_lista()
 
 	pa2m_nuevo_grupo("PRUEBAS DE INSERTAR AL FINAL");
 	pruebas_insertar_al_final();
+
+	pa2m_nuevo_grupo("PRUEBAS DE LEER UNA LISTA");
+	pruebas_leer_lista();
 
 	pa2m_nuevo_grupo("PRUEBAS DE INSERTAR EN CUALQUIER POSICION");
 	pruebas_insertar_en_cualquier_posicion();
