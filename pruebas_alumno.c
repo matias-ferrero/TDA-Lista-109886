@@ -7,6 +7,15 @@
 
 #define ERROR -1
 
+typedef struct {
+	size_t id;
+	size_t salud;
+	char *nombre_entrenador;
+	char *nombre;
+} pkm_para_destruir_t;
+
+
+
 int comparador(void *elemento, void*contexto)
 {
 	if (elemento == contexto)
@@ -14,7 +23,6 @@ int comparador(void *elemento, void*contexto)
 	
 	return ERROR;
 }
-
 
 void pruebas_creacion_y_destruccion()
 {
@@ -30,62 +38,17 @@ void pruebas_creacion_y_destruccion()
 	return;
 }
 
-void pruebas_parametros_invalidos()
-{
-	lista_t *lista = lista_crear();
-
-	void *elemento = (void*)0x1234;
-	void *contexto = (void*)0x4321;
-
-	pa2m_afirmar(!lista_insertar(NULL, elemento),
-		     "No se puede insertar un elemento a una lista que no existe");
-
-	pa2m_afirmar(!lista_insertar_en_posicion(NULL, elemento, 0),
-		     "No se puede insertar un elemento en cualquier posicion a una lista que no existe");
-
-	pa2m_afirmar(!lista_quitar(NULL), 
-		     "No se puede quitar un elemento de una lista que no existe");
-
-	pa2m_afirmar(!lista_quitar_de_posicion(NULL, 0),
-		     "No se puede quitar un elemento de cualquier posicion de una lista que no existe");
-
-	pa2m_afirmar(!lista_elemento_en_posicion(NULL, 0),
-		     "No se puede buscar un elemento de cualquier posicion de una lista que no existe");
-
-	pa2m_afirmar(!lista_buscar_elemento(NULL, comparador, contexto),
-		     "No se puede buscar un elemento con cualquier condicion de una lista que no existe");
-
-	pa2m_afirmar(!lista_buscar_elemento(lista, NULL, elemento),
-		     "No se puede buscar un elemento de una lista con una funcion comparador que no existe");
-
-	lista_destruir(lista);
-
-	return;
-}
-
-void pruebas_insertar_al_final()
+void pruebas_insertar_y_destruir()
 {
 	lista_t *lista = lista_crear();
 
 	void *elemento1 = (void*)0x1234;
-	void *elemento2 = (void*)0x4321;
 
 	pa2m_afirmar(lista_insertar(lista, elemento1) != NULL,
 		     "Se puede insertar un elemento al final de la lista");
 
 	pa2m_afirmar(lista_insertar(lista, NULL) != NULL,
 		     "Se puede insertar NULL al final de la lista");
-
-	lista_insertar(lista, elemento2);
-
-	pa2m_afirmar(lista_primero(lista) == elemento1,
-		     "El primer elemento ingresado es el primero en la lista");
-
-	pa2m_afirmar(lista_ultimo(lista) == elemento2,
-		      "El ultimo elemento ingresado es el ultimo en la lista");
-
-	pa2m_afirmar(lista_tamanio(lista) == 3,
-		     "Se insertaron 3 elementos, y el tamanio es 3");
 
 	lista_destruir(lista);
 }
@@ -103,7 +66,7 @@ void pruebas_leer_lista()
 	pa2m_afirmar(!lista_vacia(lista), "La lista no esta vacia");
 
 	pa2m_afirmar(lista_tamanio(lista) == 2,
-		     "La lista tiene dos elementos");
+		     "Se insertan 2 elementos, y el tamanio es 2");
 	
 	pa2m_afirmar(lista_primero(lista) == elemento1,
 		     "Se puede leer el primer elemento de la lista");
@@ -148,7 +111,7 @@ void pruebas_insertar_en_cualquier_posicion()
 
 
 	pa2m_afirmar(lista_insertar_en_posicion(lista, elemento1, 100) != NULL,
-		     "Se puede insertar un elemento en una posicion inexistente, al final de la lista");
+		     "Se puede insertar un elemento en una posicion inexistente");
 
 	pa2m_afirmar(lista_ultimo(lista) == elemento1,
 		      "El elemento ingresado ahora es el ultimo de la lista");
@@ -301,17 +264,62 @@ void pruebas_buscar_por_condicion()
 
 	return;
 }
+/*
+void pruebas_destruir_todos_los_elementos()
+{
+	lista_t *lista = lista_crear();
+
+	lista_insertar(lista, malloc(sizeof(int)));
+	lista_insertar(lista, malloc(sizeof(float)));
+	lista_insertar(lista, malloc(sizeof(long)));
+	lista_insertar(lista, malloc(sizeof(char)));
+	lista_insertar(lista, malloc(sizeof(pkm_para_destruir_t)));
+
+	lista_destruir_todo(lista, free);
+
+	return;
+}
+*/
+void pruebas_parametros_invalidos()
+{
+	lista_t *lista = lista_crear();
+
+	void *elemento = (void*)0x1234;
+	void *contexto = (void*)0x4321;
+
+	pa2m_afirmar(!lista_insertar(NULL, elemento),
+		     "No se puede insertar un elemento a una lista que no existe");
+
+	pa2m_afirmar(!lista_insertar_en_posicion(NULL, elemento, 0),
+		     "No se puede insertar un elemento en cualquier posicion a una lista que no existe");
+
+	pa2m_afirmar(!lista_quitar(NULL), 
+		     "No se puede quitar un elemento de una lista que no existe");
+
+	pa2m_afirmar(!lista_quitar_de_posicion(NULL, 0),
+		     "No se puede quitar un elemento de cualquier posicion de una lista que no existe");
+
+	pa2m_afirmar(!lista_elemento_en_posicion(NULL, 0),
+		     "No se puede buscar un elemento de cualquier posicion de una lista que no existe");
+
+	pa2m_afirmar(!lista_buscar_elemento(NULL, comparador, contexto),
+		     "No se puede buscar un elemento con cualquier condicion de una lista que no existe");
+
+	pa2m_afirmar(!lista_buscar_elemento(lista, NULL, elemento),
+		     "No se puede buscar un elemento de una lista con una funcion comparador que no existe");
+
+	lista_destruir(lista);
+
+	return;
+}
 
 void pruebas_de_la_lista()
 {
 	pa2m_nuevo_grupo("PRUEBAS DE CREACION Y DESTRUCCION");
 	pruebas_creacion_y_destruccion();
 
-	pa2m_nuevo_grupo("PRUEBAS DE PARAMETROS INVALIDOS");
-	pruebas_parametros_invalidos();
-
-	pa2m_nuevo_grupo("PRUEBAS DE INSERTAR AL FINAL");
-	pruebas_insertar_al_final();
+	pa2m_nuevo_grupo("PRUEBAS DE INSERTAR Y DESTRUIR ELEMENTOS");
+	pruebas_insertar_y_destruir();
 
 	pa2m_nuevo_grupo("PRUEBAS DE LEER UNA LISTA");
 	pruebas_leer_lista();
@@ -319,10 +327,10 @@ void pruebas_de_la_lista()
 	pa2m_nuevo_grupo("PRUEBAS DE INSERTAR EN CUALQUIER POSICION");
 	pruebas_insertar_en_cualquier_posicion();
 
-	pa2m_nuevo_grupo("PRUEBAS DE QUITAR AL FINAL");
+	pa2m_nuevo_grupo("PRUEBAS DE QUITAR Y DESTRUIR ELEMENTOS");
 	pruebas_quitar_al_final();
 
-	pa2m_nuevo_grupo("PRUEBAS DE QUITAR EN CUALQUIER POSICION");
+	pa2m_nuevo_grupo("PRUEBAS DE QUITAR ELEMENTOS EN CUALQUIER POSICION");
 	pruebas_quitar_en_cualquier_posicion();
 
 	pa2m_nuevo_grupo("PRUEBAS DE BUSCAR ELEMENTOS POR POSICION");
@@ -330,6 +338,12 @@ void pruebas_de_la_lista()
 
 	pa2m_nuevo_grupo("PRUEBAS DE BUSCAR ELEMENTOS POR CONDICION");
 	pruebas_buscar_por_condicion();
+
+	//pa2m_nuevo_grupo("PRUEBAS DE DESTRUIR TODOS LOS ELEMENTOS");
+	//pruebas_destruir_todos_los_elementos();
+
+	pa2m_nuevo_grupo("PRUEBAS DE PARAMETROS INVALIDOS");
+	pruebas_parametros_invalidos();
 
 	return;
 }
