@@ -5,9 +5,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define ERROR -1
+
 int comparador(void *elemento, void*contexto)
 {
-	return 0;
+	if (elemento == contexto)
+		return 0;
+	
+	return ERROR;
 }
 
 
@@ -252,13 +257,27 @@ void pruebas_buscar_por_condicion()
 	pa2m_afirmar(!lista_buscar_elemento(lista, comparador, contexto),
 		     "No se puede buscar un elemento con cualquier condicion de una lista vacia");
 
+	void *elemento1 = (void*)0x1234;
+	void *elemento2 = (void*)0x4321;
+	void *elemento3 = (void*)0x1234;
+
+	lista_insertar_en_posicion(lista, elemento1, 0);
+	lista_insertar_en_posicion(lista, elemento2, 1);
+	lista_insertar_en_posicion(lista, elemento3, 2);
+
+	pa2m_afirmar(lista_buscar_elemento(lista, comparador, contexto) == elemento2,
+		     "Se puede buscar un elemento con cualquier condicion de una lista");
+
+	pa2m_afirmar(lista_buscar_elemento(lista, comparador, NULL) == NULL,
+		     "No encontrar el elemento devuelve NULL");
+
 	lista_destruir(lista);
 
 	return;
 }
 
 void pruebas_de_la_lista()
-{/*
+{
 	pa2m_nuevo_grupo("PRUEBAS DE CREACION Y DESTRUCCION");
 	pruebas_creacion_y_destruccion();
 
@@ -276,7 +295,7 @@ void pruebas_de_la_lista()
 
 	pa2m_nuevo_grupo("PRUEBAS DE QUITAR EN CUALQUIER POSICION");
 	pruebas_quitar_en_cualquier_posicion();
-*/
+
 	pa2m_nuevo_grupo("PRUEBAS DE BUSCAR ELEMENTOS POR POSICION");
 	pruebas_buscar_por_posicion();
 
