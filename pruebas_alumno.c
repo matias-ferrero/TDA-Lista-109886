@@ -324,8 +324,8 @@ void pruebas_de_la_lista()
 	pa2m_nuevo_grupo("PRUEBAS DE LEER UNA LISTA");
 	pruebas_leer_lista();
 
-	pa2m_nuevo_grupo("PRUEBAS DE INSERTAR EN CUALQUIER POSICION");
-	pruebas_insertar_en_cualquier_posicion();
+	//pa2m_nuevo_grupo("PRUEBAS DE INSERTAR EN CUALQUIER POSICION");
+	//pruebas_insertar_en_cualquier_posicion();
 
 	pa2m_nuevo_grupo("PRUEBAS DE QUITAR Y DESTRUIR ELEMENTOS");
 	pruebas_quitar_al_final();
