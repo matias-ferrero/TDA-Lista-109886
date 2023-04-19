@@ -62,7 +62,7 @@ lista_t *lista_insertar_en_posicion(lista_t *lista, void *elemento,
 	if (!lista)
 		return NULL;
 
-	if (lista_vacia(lista) || posicion >= (lista->cantidad_nodos - 1))
+	if (lista_vacia(lista) || posicion >= lista_tamanio(lista))
 		return lista_insertar(lista, elemento);
 
 	nodo_t *nodo = calloc(1, sizeof(nodo_t));
@@ -242,7 +242,7 @@ lista_iterador_t *lista_iterador_crear(lista_t *lista)
 	if (!lista)
 		return NULL;
 
-	lista_iterador_t *iterador = calloc(1, sizeof(lista_iterador_t));
+	lista_iterador_t *iterador = malloc(sizeof(lista_iterador_t));
 	if (!iterador)
 		return NULL;
 
@@ -254,7 +254,7 @@ lista_iterador_t *lista_iterador_crear(lista_t *lista)
 
 bool lista_iterador_tiene_siguiente(lista_iterador_t *iterador)
 {
-	if (!iterador || iterador->nodo->siguiente != NULL)
+	if (!iterador || !iterador->nodo->siguiente)
 		return false;
 
 	return true;
@@ -272,7 +272,7 @@ bool lista_iterador_avanzar(lista_iterador_t *iterador)
 
 void *lista_iterador_elemento_actual(lista_iterador_t *iterador)
 {
-	if (!iterador)
+	if (!iterador || !iterador->nodo)
 		return NULL;
 
 	return iterador->nodo->elemento;
@@ -280,6 +280,9 @@ void *lista_iterador_elemento_actual(lista_iterador_t *iterador)
 
 void lista_iterador_destruir(lista_iterador_t *iterador)
 {
+	if (!iterador)
+		return;
+
 	free(iterador);
 
 	return;
@@ -288,26 +291,18 @@ void lista_iterador_destruir(lista_iterador_t *iterador)
 size_t lista_con_cada_elemento(lista_t *lista, bool (*funcion)(void *, void *),
 			       void *contexto)
 {
-	if (!lista  || !funcion || !contexto)
+	if (!lista  || !funcion || lista_vacia(lista))
 		return 0;
 
-	return 0;
+	bool validar = true;
+	size_t iterados = 0;
+	nodo_t *nodo = lista->nodo_inicio;
+
+	while (validar && iterados < lista->cantidad_nodos) {
+		validar = funcion(nodo->elemento, contexto);
+		nodo = nodo->siguiente;
+		iterados++;
+	}
+	
+	return iterados;
 }
-
-/*
-	if (posicion == 0) {
-		nodo->siguiente = lista->nodo_inicio;
-		lista->nodo_inicio = nodo;
-	} else if (posicion < lista->cantidad_nodos) {
-		nodo->siguiente = lista->nodo_inicio->siguiente;
-		lista->nodo_inicio->siguiente = nodo;
-	} else 
-		lista->nodo_fin->siguiente = nodo;
-
-	if (!nodo->siguiente)
-		lista->nodo_fin = nodo;
-
-	lista->cantidad_nodos++;
-
-	nodo->elemento = elemento;
-*/
