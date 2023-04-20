@@ -1,6 +1,7 @@
 #include "pa2m.h"
 
 #include "src/lista.h"
+#include "src/cola.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -344,7 +345,9 @@ void pruebas_parametros_invalidos()
 	return;
 }
 
-void pruebas_de_la_lista()
+
+
+void pruebas_del_tda_lista()
 {/*
 	pa2m_nuevo_grupo("PRUEBAS DE CREACION Y DESTRUCCION");
 	pruebas_creacion_y_destruccion();
@@ -379,12 +382,57 @@ void pruebas_de_la_lista()
 	return;
 }
 
+/*
+-----------------------------------------------------------------------------
+*/
+
+void pruebas_del_tda_cola()
+{
+	cola_t *cola = cola_crear();
+
+	pa2m_afirmar(cola != NULL, "Se pudo crear una cola");
+
+	pa2m_afirmar(cola_vacia(cola) && !cola_tamanio(cola),
+		     "La cola esta vacia");
+
+	pa2m_afirmar(!cola_frente(cola), "La cola esta bien inicializada");
+
+	int numeros[] = { 1, 2, 3, 4 };
+
+	for (size_t i = 0; i < sizeof(numeros) / sizeof(int); i++) {
+		pa2m_afirmar(cola_encolar(cola, &numeros[i]) != NULL,
+			     "Se pudo encolar un elemento");
+		pa2m_afirmar(cola_tamanio(cola) == i + 1,
+		             "La cola actualizo su tamanio correctamente");
+	}
+
+	pa2m_afirmar(!cola_vacia(cola) && cola_frente(cola) == &numeros[0],
+		     "Se puede encontrar el primer elemento de la cola");
+
+	printf("\nDesencolo los numeros y los muestro: ");
+	while (!cola_vacia(cola))
+		pa2m_afirmar(cola_desencolar(cola) != NULL,
+			     "Se pudo desencolar");
+
+	printf("\n");
+
+	pa2m_afirmar(cola_vacia(cola) && !cola_frente(cola),
+		     "La cola quedo vacia");
+
+	cola_destruir(cola);
+
+	return;
+}
+
 int main()
 {
 	pa2m_nuevo_grupo("----------- PRUEBAS DEL TP: TDA-LISTA -----------");
 
-	pa2m_nuevo_grupo("--- PRUEBAS DEL TDA-LISTA ---");
-	pruebas_de_la_lista();
+	//pa2m_nuevo_grupo("--- PRUEBAS DEL TDA-LISTA ---");
+	//pruebas_del_tda_lista();
+
+	pa2m_nuevo_grupo("--- PRUEBAS DEL TDA-COLA ---");
+	pruebas_del_tda_cola();
 
 	return pa2m_mostrar_reporte();
 }
