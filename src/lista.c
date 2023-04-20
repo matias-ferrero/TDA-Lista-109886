@@ -204,37 +204,25 @@ size_t lista_tamanio(lista_t *lista)
 
 void lista_destruir(lista_t *lista)
 {
+	lista_destruir_todo(lista, NULL);
+}
+
+void lista_destruir_todo(lista_t *lista, void (*funcion)(void *))
+{
 	if (!lista)
 		return;
 
 	while (lista->cantidad_nodos != 0) {
 		nodo_t *nodo_auxiliar = lista->nodo_inicio->siguiente;
+		if (funcion != NULL)
+			funcion(lista->nodo_inicio->elemento);
+
 		free(lista->nodo_inicio);
 		lista->nodo_inicio = nodo_auxiliar;
 		lista->cantidad_nodos--;
 	}
 
 	free(lista);
-
-	return;
-}
-
-void lista_destruir_todo(lista_t *lista, void (*funcion)(void *))
-{
-	if (!lista || !funcion)
-		return;
-
-	while (lista->cantidad_nodos != 0) {
-		nodo_t *nodo_auxiliar = lista->nodo_inicio->siguiente;
-		funcion(lista->nodo_inicio->elemento);
-		free(lista->nodo_inicio);
-		lista->nodo_inicio = nodo_auxiliar;
-		lista->cantidad_nodos--;
-	}
-
-	free(lista);
-
-	return;
 }
 
 lista_iterador_t *lista_iterador_crear(lista_t *lista)
@@ -249,12 +237,12 @@ lista_iterador_t *lista_iterador_crear(lista_t *lista)
 	iterador->lista = lista;
 	iterador->nodo = lista->nodo_inicio;
 
-	return NULL;
+	return iterador;
 }
 
 bool lista_iterador_tiene_siguiente(lista_iterador_t *iterador)
 {
-	if (!iterador || !iterador->nodo->siguiente)
+	if (!iterador || !iterador->nodo)
 		return false;
 
 	return true;
@@ -262,12 +250,15 @@ bool lista_iterador_tiene_siguiente(lista_iterador_t *iterador)
 
 bool lista_iterador_avanzar(lista_iterador_t *iterador)
 {
-	if (!iterador || !iterador->nodo->siguiente)
+	if (!iterador || lista_vacia(iterador->lista))
 		return false;
 
-	iterador->nodo = iterador->nodo->siguiente;
+	if (lista_iterador_tiene_siguiente(iterador)) {
+		iterador->nodo = iterador->nodo->siguiente;
+		return iterador->nodo != NULL;
+	}
 
-	return true;
+	return false;
 }
 
 void *lista_iterador_elemento_actual(lista_iterador_t *iterador)
@@ -280,12 +271,7 @@ void *lista_iterador_elemento_actual(lista_iterador_t *iterador)
 
 void lista_iterador_destruir(lista_iterador_t *iterador)
 {
-	if (!iterador)
-		return;
-
 	free(iterador);
-
-	return;
 }
 
 size_t lista_con_cada_elemento(lista_t *lista, bool (*funcion)(void *, void *),

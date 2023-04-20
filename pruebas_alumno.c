@@ -34,8 +34,6 @@ void pruebas_creacion_y_destruccion()
 	  	     "La lista esta vacia");
 
 	lista_destruir(lista);
-
-	return;
 }
 
 void pruebas_insertar_y_destruir()
@@ -75,8 +73,6 @@ void pruebas_leer_lista()
 		     "Se puede leer el ultimo elemento de la lista");
 
 	lista_destruir(lista);
-
-	return;
 }
 
 void pruebas_insertar_en_cualquier_posicion()
@@ -155,8 +151,6 @@ void pruebas_insertar_en_cualquier_posicion()
 	lista_insertar_en_posicion(lista, &w, 4);
 
 	lista_destruir(lista);
-
-	return;
 }
 
 void pruebas_quitar_al_final()
@@ -189,8 +183,6 @@ void pruebas_quitar_al_final()
 		     "Se reajusta bien la lista vacia");
 
 	lista_destruir(lista);
-
-	return;
 }
 
 void pruebas_quitar_en_cualquier_posicion()
@@ -235,8 +227,6 @@ void pruebas_quitar_en_cualquier_posicion()
 		     "Se reajusta bien la lista vacia");
 
 	lista_destruir(lista);
-
-	return;
 }
 
 void pruebas_buscar_por_posicion()
@@ -264,8 +254,6 @@ void pruebas_buscar_por_posicion()
 		     "Se puede encontrar el ultimo elemento de la lista");
 
 	lista_destruir(lista);
-
-	return;
 }
 
 void pruebas_buscar_por_condicion()
@@ -292,8 +280,6 @@ void pruebas_buscar_por_condicion()
 		     "No encontrar el elemento devuelve NULL");
 
 	lista_destruir(lista);
-
-	return;
 }
 /*
 void pruebas_destruir_todos_los_elementos()
@@ -340,8 +326,6 @@ void pruebas_de_lista_con_parametros_invalidos()
 		     "No se puede buscar un elemento de una lista con una funcion comparador que no existe");
 
 	lista_destruir(lista);
-
-	return;
 }
 
 void pruebas_del_tda_lista()
@@ -376,7 +360,6 @@ void pruebas_del_tda_lista()
 	pa2m_nuevo_grupo("PRUEBAS DE PARAMETROS INVALIDOS");
 	pruebas_de_lista_con_parametros_invalidos();
 */
-	return;
 }
 
 /*
@@ -421,8 +404,6 @@ void pruebas_operaciones_cola()
 		     "No se pueden desencolar elementos de una cola vacia");
 
 	cola_destruir(cola);
-
-	return;
 }
 
 void pruebas_de_cola_con_parametros_NULL()
@@ -443,8 +424,6 @@ void pruebas_de_cola_con_parametros_NULL()
 
 	pa2m_afirmar(cola_vacia(NULL),
 		     "Una cola inexistente es una cola vacia");
-
-	return;
 }
 
 void pruebas_del_tda_cola()
@@ -454,8 +433,6 @@ void pruebas_del_tda_cola()
 
 	pa2m_nuevo_grupo("PRUEBAS DE COLA CON PARAMETROS NULL");
 	pruebas_de_cola_con_parametros_NULL();
-
-	return;
 }
 
 /*
@@ -501,8 +478,6 @@ void pruebas_operaciones_pila()
 		     "No se pueden desapilar elementos de una pila vacia");
 
 	pila_destruir(pila);
-
-	return;
 }
 
 void pruebas_de_pila_con_parametros_NULL()
@@ -523,8 +498,6 @@ void pruebas_de_pila_con_parametros_NULL()
 
 	pa2m_afirmar(pila_vacia(NULL),
 		     "Una pila inexistente es una pila vacia");
-
-	return;
 }
 
 void pruebas_del_tda_pila()
@@ -534,8 +507,32 @@ void pruebas_del_tda_pila()
 
 	pa2m_nuevo_grupo("PRUEBAS DE PILA CON PARAMETROS NULL");
 	pruebas_de_pila_con_parametros_NULL();
+}
 
-	return;
+/*
+-----------------------------------------------------------------------------
+*/
+
+void pruebas_del_iterador_externo_de_la_lista()
+{
+	lista_t * lista = lista_crear();	
+	lista_iterador_t *iterador = lista_iterador_crear(lista);
+
+	pa2m_afirmar(iterador != NULL, "Se puede crear el iterador");
+
+	pa2m_afirmar(!lista_iterador_tiene_siguiente(iterador),
+	             "No se encuentran elementos a iterar en una lista vacia");
+
+	pa2m_afirmar(!lista_iterador_avanzar(iterador),
+	             "No se puede iterar una lista vacia");
+
+	pa2m_afirmar(!lista_iterador_elemento_actual(iterador),
+	             "No se encuentran elementos en una lista vacia");
+
+	//char a = 'a', b = 'b', c = 'c', d = 'd', w = 'w';
+	//char *valor;	
+
+	lista_iterador_destruir(iterador);
 }
 
 /*
@@ -546,9 +543,13 @@ int main()
 {
 	pa2m_nuevo_grupo("----------- PRUEBAS DEL TP: TDA-LISTA -----------");
 
-	pa2m_nuevo_grupo("--- PRUEBAS DEL TDA-LISTA ---");
-	pruebas_del_tda_lista();
-	printf("\n");
+	//pa2m_nuevo_grupo("--- PRUEBAS DEL TDA-LISTA ---");
+	//pruebas_del_tda_lista();
+	//printf("\n");
+
+	pa2m_nuevo_grupo("---PRUEBAS DEL ITERADOR EXTERNO");
+	pruebas_del_iterador_externo_de_la_lista();
+	printf("/n");
 /*
 	pa2m_nuevo_grupo("--- PRUEBAS DEL TDA-COLA ---");
 	pruebas_del_tda_cola();
