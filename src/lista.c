@@ -82,7 +82,7 @@ lista_t *lista_insertar_en_posicion(lista_t *lista, void *elemento,
 
 	nodo->elemento = elemento;
 	lista->cantidad_nodos++;
-	
+
 	return lista;
 }
 
@@ -108,7 +108,7 @@ void *lista_quitar(lista_t *lista)
 	lista->cantidad_nodos--;
 	free(nodo);
 
-	return elemento; 
+	return elemento;
 }
 
 void *lista_quitar_de_posicion(lista_t *lista, size_t posicion)
@@ -148,7 +148,7 @@ void *lista_elemento_en_posicion(lista_t *lista, size_t posicion)
 
 	nodo_t *nodo = buscar_nodo_por_posicion(lista->nodo_inicio, 0,
 						     posicion);
-	
+
 	return nodo->elemento;
 }
 
@@ -163,10 +163,10 @@ void *lista_buscar_elemento(lista_t *lista, int (*comparador)(void *, void *),
 	for (size_t i = 0; i < lista_tamanio(lista); i++) {
 		if (!comparador(nodo->elemento, contexto))
 			return nodo->elemento;
-		
+
 		nodo = nodo->siguiente;
 	}
-	
+
 	return NULL;
 }
 
@@ -303,6 +303,6 @@ size_t lista_con_cada_elemento(lista_t *lista, bool (*funcion)(void *, void *),
 		nodo = nodo->siguiente;
 		iterados++;
 	}
-	
+
 	return iterados;
 }

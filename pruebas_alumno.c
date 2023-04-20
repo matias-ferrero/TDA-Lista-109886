@@ -16,13 +16,11 @@ typedef struct {
 	char *nombre;
 } pkm_para_destruir_t;
 
-
-
 int comparador(void *elemento, void*contexto)
 {
 	if (elemento == contexto)
 		return 0;
-	
+
 	return ERROR;
 }
 
@@ -69,7 +67,7 @@ void pruebas_leer_lista()
 
 	pa2m_afirmar(lista_tamanio(lista) == 2,
 		     "Se insertan 2 elementos, y el tamanio es 2");
-	
+
 	pa2m_afirmar(lista_primero(lista) == elemento1,
 		     "Se puede leer el primer elemento de la lista");
 
@@ -186,7 +184,7 @@ void pruebas_quitar_al_final()
 
 	pa2m_afirmar(!lista_tamanio(lista) && lista_vacia(lista),
 		     "Se eliminan todos los elementos y la lista queda vacia");
-		     
+
 	pa2m_afirmar(!lista_primero(lista) && !lista_ultimo(lista),
 		     "Se reajusta bien la lista vacia");
 
@@ -256,13 +254,13 @@ void pruebas_buscar_por_posicion()
 	lista_insertar_en_posicion(lista, elemento2, 1);
 	lista_insertar_en_posicion(lista, elemento3, 2);
 
-	pa2m_afirmar(lista_elemento_en_posicion(lista, 0) == elemento1, 
+	pa2m_afirmar(lista_elemento_en_posicion(lista, 0) == elemento1,
 		     "Se puede encontrar el primer elemento de la lista");
 
-	pa2m_afirmar(lista_elemento_en_posicion(lista, 1) == elemento2, 
+	pa2m_afirmar(lista_elemento_en_posicion(lista, 1) == elemento2,
 		     "Se pueden encontrar elementos en el medio de la lista");
 
-	pa2m_afirmar(lista_elemento_en_posicion(lista, 2) == elemento3, 
+	pa2m_afirmar(lista_elemento_en_posicion(lista, 2) == elemento3,
 		     "Se puede encontrar el ultimo elemento de la lista");
 
 	lista_destruir(lista);
@@ -326,7 +324,7 @@ void pruebas_de_lista_con_parametros_invalidos()
 	pa2m_afirmar(!lista_insertar_en_posicion(NULL, elemento, 0),
 		     "No se puede insertar un elemento en cualquier posicion a una lista que no existe");
 
-	pa2m_afirmar(!lista_quitar(NULL), 
+	pa2m_afirmar(!lista_quitar(NULL),
 		     "No se puede quitar un elemento de una lista que no existe");
 
 	pa2m_afirmar(!lista_quitar_de_posicion(NULL, 0),
@@ -345,8 +343,6 @@ void pruebas_de_lista_con_parametros_invalidos()
 
 	return;
 }
-
-
 
 void pruebas_del_tda_lista()
 {/*
@@ -433,13 +429,13 @@ void pruebas_de_cola_con_parametros_NULL()
 {
 	char a = 'a';
 
-	pa2m_afirmar(!cola_encolar(NULL, &a), 
+	pa2m_afirmar(!cola_encolar(NULL, &a),
 		     "No se puede encolar en una cola inexistente");
 
-	pa2m_afirmar(!cola_desencolar(NULL), 
+	pa2m_afirmar(!cola_desencolar(NULL),
 		     "No se puede desencolar de una cola inexistente");
 
-	pa2m_afirmar(!cola_frente(NULL), 
+	pa2m_afirmar(!cola_frente(NULL),
 		     "No se puede leer el inicio de una cola inexistente");
 
 	pa2m_afirmar(!cola_tamanio(NULL),
@@ -513,13 +509,13 @@ void pruebas_de_pila_con_parametros_NULL()
 {
 	char a = 'a';
 
-	pa2m_afirmar(!pila_apilar(NULL, &a), 
+	pa2m_afirmar(!pila_apilar(NULL, &a),
 		     "No se puede apilar en una pila inexistente");
 
-	pa2m_afirmar(!pila_desapilar(NULL), 
+	pa2m_afirmar(!pila_desapilar(NULL),
 		     "No se puede desapilar de una pila inexistente");
 
-	pa2m_afirmar(!pila_tope(NULL), 
+	pa2m_afirmar(!pila_tope(NULL),
 		     "No se puede leer el tope de una pila inexistente");
 
 	pa2m_afirmar(!pila_tamanio(NULL),
@@ -541,6 +537,10 @@ void pruebas_del_tda_pila()
 
 	return;
 }
+
+/*
+-----------------------------------------------------------------------------
+*/
 
 int main()
 {
