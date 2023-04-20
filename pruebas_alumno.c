@@ -2,6 +2,7 @@
 
 #include "src/lista.h"
 #include "src/cola.h"
+#include "src/pila.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -399,6 +400,7 @@ void pruebas_del_tda_cola()
 
 	int numeros[] = { 1, 2, 3, 4 };
 
+	printf("\nEncolo los numeros:\n");
 	for (size_t i = 0; i < sizeof(numeros) / sizeof(int); i++) {
 		pa2m_afirmar(cola_encolar(cola, &numeros[i]) != NULL,
 			     "Se pudo encolar un elemento");
@@ -409,7 +411,7 @@ void pruebas_del_tda_cola()
 	pa2m_afirmar(!cola_vacia(cola) && cola_frente(cola) == &numeros[0],
 		     "Se puede encontrar el primer elemento de la cola");
 
-	printf("\nDesencolo los numeros y los muestro: ");
+	printf("\nDesencolo los numeros y los muestro:\n");
 	while (!cola_vacia(cola))
 		pa2m_afirmar(cola_desencolar(cola) != NULL,
 			     "Se pudo desencolar");
@@ -424,6 +426,31 @@ void pruebas_del_tda_cola()
 	return;
 }
 
+/*
+-----------------------------------------------------------------------------
+*/
+
+void pruebas_del_tda_pila()
+{
+	pila_t *pila = pila_crear();
+	char *algo = "somtirogla";
+
+	for (int i = 0; algo[i] != 0; i++) {
+		printf("Apilo %c\n", algo[i]);
+		pila_apilar(pila, &algo[i]);
+	}
+
+	printf("\nDesapilo y muestro los elementos apilados: ");
+	while (!pila_vacia(pila)) {
+		printf("%c", *(char *)pila_tope(pila));
+		pila_desapilar(pila);
+	}
+
+	pila_destruir(pila);
+
+	return;
+}
+
 int main()
 {
 	pa2m_nuevo_grupo("----------- PRUEBAS DEL TP: TDA-LISTA -----------");
@@ -433,6 +460,9 @@ int main()
 
 	pa2m_nuevo_grupo("--- PRUEBAS DEL TDA-COLA ---");
 	pruebas_del_tda_cola();
+
+	//pa2m_nuevo_grupo("--- PRUEBAS DEL TDA-PILA ---");
+	//pruebas_del_tda_pila();
 
 	return pa2m_mostrar_reporte();
 }
