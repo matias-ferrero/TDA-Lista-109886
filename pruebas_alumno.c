@@ -433,18 +433,37 @@ void pruebas_del_tda_cola()
 void pruebas_del_tda_pila()
 {
 	pila_t *pila = pila_crear();
-	char *algo = "somtirogla";
 
-	for (int i = 0; algo[i] != 0; i++) {
-		printf("Apilo %c\n", algo[i]);
-		pila_apilar(pila, &algo[i]);
+	pa2m_afirmar(pila != NULL, "Se pudo crear una pila");
+
+	pa2m_afirmar(pila_vacia(pila) && !pila_tamanio(pila),
+		     "La pila esta vacia");
+
+	pa2m_afirmar(!pila_tope(pila), "La pila esta bien inicializada");
+
+	char *algo = "2ogla";
+
+	int i;
+	printf("\nApilo los elementos:\n");
+	for (i = 0; algo[i] != 0; i++) {
+		pa2m_afirmar(pila_apilar(pila, &algo[i]) != NULL,
+			     "Se pudo encolar un elemento");
+		pa2m_afirmar(pila_tamanio(pila) == i + 1,
+		             "La pila actualizo su tamanio correctamente");
 	}
 
-	printf("\nDesapilo y muestro los elementos apilados: ");
-	while (!pila_vacia(pila)) {
-		printf("%c", *(char *)pila_tope(pila));
-		pila_desapilar(pila);
-	}
+	pa2m_afirmar(!pila_vacia(pila) && pila_tope(pila) == &algo[i - 1],
+		     "Se puede encontrar el tope de la pila");
+
+	printf("\nDesapilo y muestro los elementos apilados:\n");
+	while (!pila_vacia(pila))
+		pa2m_afirmar(pila_desapilar(pila) != NULL,
+			     "Se pudo desapilar");
+
+	printf("\n");
+
+	pa2m_afirmar(pila_vacia(pila) && !pila_tope(pila),
+		     "La pila quedo vacia");
 
 	pila_destruir(pila);
 
@@ -461,8 +480,8 @@ int main()
 	pa2m_nuevo_grupo("--- PRUEBAS DEL TDA-COLA ---");
 	pruebas_del_tda_cola();
 
-	//pa2m_nuevo_grupo("--- PRUEBAS DEL TDA-PILA ---");
-	//pruebas_del_tda_pila();
+	pa2m_nuevo_grupo("--- PRUEBAS DEL TDA-PILA ---");
+	pruebas_del_tda_pila();
 
 	return pa2m_mostrar_reporte();
 }
