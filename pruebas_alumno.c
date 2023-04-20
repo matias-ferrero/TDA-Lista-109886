@@ -313,7 +313,7 @@ void pruebas_destruir_todos_los_elementos()
 	return;
 }
 */
-void pruebas_parametros_invalidos()
+void pruebas_de_lista_con_parametros_invalidos()
 {
 	lista_t *lista = lista_crear();
 
@@ -378,7 +378,7 @@ void pruebas_del_tda_lista()
 	//pruebas_destruir_todos_los_elementos();
 
 	pa2m_nuevo_grupo("PRUEBAS DE PARAMETROS INVALIDOS");
-	pruebas_parametros_invalidos();
+	pruebas_de_lista_con_parametros_invalidos();
 */
 	return;
 }
@@ -387,7 +387,7 @@ void pruebas_del_tda_lista()
 -----------------------------------------------------------------------------
 */
 
-void pruebas_del_tda_cola()
+void pruebas_operaciones_cola()
 {
 	cola_t *cola = cola_crear();
 
@@ -421,7 +421,43 @@ void pruebas_del_tda_cola()
 	pa2m_afirmar(cola_vacia(cola) && !cola_frente(cola),
 		     "La cola quedo vacia");
 
+	pa2m_afirmar(!cola_desencolar(cola),
+		     "No se pueden desencolar elementos de una cola vacia");
+
 	cola_destruir(cola);
+
+	return;
+}
+
+void pruebas_de_cola_con_parametros_NULL()
+{
+	char a = 'a';
+
+	pa2m_afirmar(!cola_encolar(NULL, &a), 
+		     "No se puede encolar en una cola inexistente");
+
+	pa2m_afirmar(!cola_desencolar(NULL), 
+		     "No se puede desencolar de una cola inexistente");
+
+	pa2m_afirmar(!cola_frente(NULL), 
+		     "No se puede leer el inicio de una cola inexistente");
+
+	pa2m_afirmar(!cola_tamanio(NULL),
+		     "El tamanio de una cola inexistente es 0");
+
+	pa2m_afirmar(cola_vacia(NULL),
+		     "Una cola inexistente es una cola vacia");
+
+	return;
+}
+
+void pruebas_del_tda_cola()
+{
+	pa2m_nuevo_grupo("PRUEBAS DE LAS OPERACIONES DE UNA COLA");
+	pruebas_operaciones_cola();
+
+	pa2m_nuevo_grupo("PRUEBAS DE COLA CON PARAMETROS NULL");
+	pruebas_de_cola_con_parametros_NULL();
 
 	return;
 }
@@ -430,7 +466,7 @@ void pruebas_del_tda_cola()
 -----------------------------------------------------------------------------
 */
 
-void pruebas_del_tda_pila()
+void pruebas_operaciones_pila()
 {
 	pila_t *pila = pila_crear();
 
@@ -465,7 +501,43 @@ void pruebas_del_tda_pila()
 	pa2m_afirmar(pila_vacia(pila) && !pila_tope(pila),
 		     "La pila quedo vacia");
 
+	pa2m_afirmar(!pila_desapilar(pila),
+		     "No se pueden desapilar elementos de una pila vacia");
+
 	pila_destruir(pila);
+
+	return;
+}
+
+void pruebas_de_pila_con_parametros_NULL()
+{
+	char a = 'a';
+
+	pa2m_afirmar(!pila_apilar(NULL, &a), 
+		     "No se puede apilar en una pila inexistente");
+
+	pa2m_afirmar(!pila_desapilar(NULL), 
+		     "No se puede desapilar de una pila inexistente");
+
+	pa2m_afirmar(!pila_tope(NULL), 
+		     "No se puede leer el tope de una pila inexistente");
+
+	pa2m_afirmar(!pila_tamanio(NULL),
+		     "El tamanio de una pila inexistente es 0");
+
+	pa2m_afirmar(pila_vacia(NULL),
+		     "Una pila inexistente es una pila vacia");
+
+	return;
+}
+
+void pruebas_del_tda_pila()
+{
+	pa2m_nuevo_grupo("PRUEBAS DE LAS OPERACIONES DE UNA PILA");
+	pruebas_operaciones_pila();
+
+	pa2m_nuevo_grupo("PRUEBAS DE PILA CON PARAMETROS NULL");
+	pruebas_de_pila_con_parametros_NULL();
 
 	return;
 }
@@ -474,15 +546,17 @@ int main()
 {
 	pa2m_nuevo_grupo("----------- PRUEBAS DEL TP: TDA-LISTA -----------");
 
-	//pa2m_nuevo_grupo("--- PRUEBAS DEL TDA-LISTA ---");
-	//pruebas_del_tda_lista();
-
+	pa2m_nuevo_grupo("--- PRUEBAS DEL TDA-LISTA ---");
+	pruebas_del_tda_lista();
+	printf("\n");
+/*
 	pa2m_nuevo_grupo("--- PRUEBAS DEL TDA-COLA ---");
 	pruebas_del_tda_cola();
+	printf("\n");
 
 	pa2m_nuevo_grupo("--- PRUEBAS DEL TDA-PILA ---");
 	pruebas_del_tda_pila();
-
+*/
 	return pa2m_mostrar_reporte();
 }
 
