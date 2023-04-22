@@ -24,7 +24,7 @@ int comparador(void *elemento, void*contexto)
 	return ERROR;
 }
 
-void pruebas_creacion_y_destruccion()
+void pruebas_de_creacion_y_destruccion()
 {
 	lista_t *lista = lista_crear();
 	pa2m_afirmar(lista != NULL, "Se puede crear una lista correctamente");
@@ -40,10 +40,10 @@ void pruebas_insertar_y_destruir()
 {
 	lista_t *lista = lista_crear();
 
-	void *elemento1 = (void*)0x1234;
+	char a = 'a';
 
-	pa2m_afirmar(lista_insertar(lista, elemento1) != NULL,
-		     "Se puede insertar un elemento al final de la lista");
+	pa2m_afirmar(lista_insertar(lista, &a) != NULL,
+		     "Se puede insertar al final de una lista vacia");
 
 	pa2m_afirmar(lista_insertar(lista, NULL) != NULL,
 		     "Se puede insertar NULL al final de la lista");
@@ -55,21 +55,20 @@ void pruebas_leer_lista()
 {
 	lista_t *lista = lista_crear();
 
-	void *elemento1 = (void*)0x1234;
-	void *elemento2 = (void*)0x4321;
+	char a = 'a', b = 'b';
 
-	lista_insertar(lista, elemento1);
-	lista_insertar(lista, elemento2);
+	lista_insertar(lista, &a);
+	lista_insertar(lista, &b);
 
 	pa2m_afirmar(!lista_vacia(lista), "La lista no esta vacia");
 
 	pa2m_afirmar(lista_tamanio(lista) == 2,
 		     "Se insertan 2 elementos, y el tamanio es 2");
 
-	pa2m_afirmar(lista_primero(lista) == elemento1,
+	pa2m_afirmar(lista_primero(lista) == &a,
 		     "Se puede leer el primer elemento de la lista");
 
-	pa2m_afirmar(lista_ultimo(lista) == elemento2,
+	pa2m_afirmar(lista_ultimo(lista) == &b,
 		     "Se puede leer el ultimo elemento de la lista");
 
 	lista_destruir(lista);
@@ -79,76 +78,43 @@ void pruebas_insertar_en_cualquier_posicion()
 {
 	lista_t *lista = lista_crear();
 
-	char a = 'a', b = 'b', c = 'c', d = 'd', w = 'w';
-	char *valor;
+	char a = 'a', b = 'b', c = 'c', d = 'd', e = 'e';
 
+	//Primera insercion
+	pa2m_afirmar(lista_insertar_en_posicion(lista, &b, 0) != NULL,
+		     "Se puede insertar un elemento en una lista vacia");
+
+	pa2m_afirmar(lista_primero(lista) == &b, "El primer elemento es b");
+	pa2m_afirmar(lista_ultimo(lista) == &b, "El ultimo elemento es b");
+
+	//Segunda insercion
 	pa2m_afirmar(lista_insertar_en_posicion(lista, &a, 0) != NULL,
-		     "Se inserta el primer elemento");
+		     "Se puede insertar un elemento en la primera posicion");
 
-	pa2m_afirmar(!lista_vacia(lista) && lista_tamanio(lista) == 1,
-		     "Se inserto 1 elemento");
+	pa2m_afirmar(lista_primero(lista) == &a,
+		     "El primer elemento ahora es a");
 
-	valor = lista_primero(lista);
-	printf("El primer elemento es %c\n", *valor);
-	pa2m_afirmar(lista_primero(lista) == &a, "El primer elemento es a");
-
-	valor = lista_ultimo(lista);
-	printf("El ultimo elemento es %c\n", *valor);
-	pa2m_afirmar(lista_ultimo(lista) == &a, "El ultimo elemento es a");
-
-	pa2m_afirmar(lista_elemento_en_posicion(lista, 0) == &a,
-		     "Se puede buscar el primer elemento, es a");
-
-
-	printf("\n\n\n");
-
-	
-	pa2m_afirmar(lista_insertar_en_posicion(lista, &b, 100) != NULL,
-		     "Se inserta segundo elemento en posicion inexistente");
-
-	pa2m_afirmar(!lista_vacia(lista) && lista_tamanio(lista) == 2,
-		     "Se insertaron 2 elementos");
-
-	valor = lista_primero(lista);
-	printf("El primer elemento es %c\n", *valor);
-	pa2m_afirmar(lista_primero(lista) == &a, "El primer elemento es a");
-
-	valor = lista_ultimo(lista);
-	printf("El ultimo elemento es %c\n", *valor);
-	pa2m_afirmar(lista_ultimo(lista) == &b, "El ultimo elemento es b");
-
-	pa2m_afirmar(lista_elemento_en_posicion(lista, 1) == &b,
-		     "Se puede buscar el segundo elemento, es b");
-
-
-	printf("\n\n\n");
-
-	
+	//Tercera insercion
 	pa2m_afirmar(lista_insertar_en_posicion(lista, &c, 1) != NULL,
-		     "Se inserta tercer elemento en ultima posicion");
+		     "Se puede insertar un elemento al medio de la lista");
 
-	pa2m_afirmar(!lista_vacia(lista) && lista_tamanio(lista) == 3,
-		     "Se insertaron 3 elementos");
+	//Cuarta insercion
+	pa2m_afirmar(lista_insertar_en_posicion(lista, &d, 3) != NULL,
+		     "Se puede insertar un elemento en la ultima posicion");
 
-	valor = lista_primero(lista);
-	printf("El primer elemento es %c\n", *valor);
-	pa2m_afirmar(lista_primero(lista) == &a, "El primer elemento es a");
+	pa2m_afirmar(lista_ultimo(lista) == &d,
+		     "El ultimo elemento ahora es d");
 
-	valor = lista_ultimo(lista);
-	printf("El ultimo elemento es %c\n", *valor);
-	pa2m_afirmar(lista_ultimo(lista) == &b, "El ultimo elemento es b");
-
-	pa2m_afirmar(lista_elemento_en_posicion(lista, 1) == &c,
-		     "Se puede buscar el segundo elemento, ahora es c");
+	//Quinta y ultima insercion
+	pa2m_afirmar(lista_insertar_en_posicion(lista, &e, 100) != NULL,
+		     "Se puede insertar en una posicion inexistente");
 
 
+	pa2m_afirmar(lista_primero(lista) == &a && lista_ultimo(lista) == &e,
+		     "Se puede obtener el inicio y el fin de la lista");
 
-
-
-	
-
-	lista_insertar_en_posicion(lista, &d, 3);
-	lista_insertar_en_posicion(lista, &w, 4);
+	pa2m_afirmar(!lista_vacia(lista) && lista_tamanio(lista) == 5,
+		     "Se insertaron 5 elementos y el tamanio es 5");
 
 	lista_destruir(lista);
 }
@@ -293,6 +259,7 @@ void pruebas_destruir_todos_los_elementos()
 	lista_insertar(lista, malloc(sizeof(pkm_para_destruir_t)));
 
 	lista_destruir_todo(lista, free);
+	printf("\nDestruir la lista con exito no debe perder memoria\n");
 
 	return;
 }
@@ -331,7 +298,7 @@ void pruebas_de_lista_con_parametros_invalidos()
 void pruebas_del_tda_lista()
 {/*
 	pa2m_nuevo_grupo("PRUEBAS DE CREACION Y DESTRUCCION");
-	pruebas_creacion_y_destruccion();
+	pruebas_de_creacion_y_destruccion();
 
 	pa2m_nuevo_grupo("PRUEBAS DE INSERTAR Y DESTRUIR ELEMENTOS");
 	pruebas_insertar_y_destruir();
@@ -543,9 +510,9 @@ int main()
 {
 	pa2m_nuevo_grupo("----------- PRUEBAS DEL TP: TDA-LISTA -----------");
 
-	//pa2m_nuevo_grupo("--- PRUEBAS DEL TDA-LISTA ---");
-	//pruebas_del_tda_lista();
-	//printf("\n");
+	pa2m_nuevo_grupo("--- PRUEBAS DEL TDA-LISTA ---");
+	pruebas_del_tda_lista();
+	printf("\n");
 
 	pa2m_nuevo_grupo("---PRUEBAS DEL ITERADOR EXTERNO");
 	pruebas_del_iterador_externo_de_la_lista();
