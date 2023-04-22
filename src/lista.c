@@ -1,6 +1,9 @@
 #include "lista.h"
+
 #include <stddef.h>
 #include <stdlib.h>
+
+#define POSICION_CERO 0
 
 typedef struct nodo {
 	void *elemento;
@@ -19,12 +22,12 @@ struct lista_iterador {
 };
 
 nodo_t *buscar_nodo_por_posicion(nodo_t *nodo, size_t posicion_en_lista,
-				      size_t posicion_buscada)
+				 size_t posicion_buscada)
 {
 	if (posicion_buscada != posicion_en_lista)
 		nodo = buscar_nodo_por_posicion(nodo->siguiente,
-			 			     posicion_en_lista + 1,
-						     posicion_buscada);
+			 			posicion_en_lista + 1,
+						posicion_buscada);
 
 	return nodo;
 }
@@ -72,10 +75,10 @@ lista_t *lista_insertar_en_posicion(lista_t *lista, void *elemento,
 	if (!posicion) {
 		nodo->siguiente = lista->nodo_inicio;
 		lista->nodo_inicio = nodo;
-	} else {
-		nodo_t *nodo_anterior_a_insertar = 
-			buscar_nodo_por_posicion(lista->nodo_inicio, 0,
-						 posicion - 1);
+	} else {							//Posible problema de formato
+		nodo_t *nodo_anterior_a_insertar =
+			buscar_nodo_por_posicion(lista->nodo_inicio,
+						 POSICION_CERO, posicion - 1);
 		nodo->siguiente = nodo_anterior_a_insertar->siguiente;
 		nodo_anterior_a_insertar->siguiente = nodo;
 	}
@@ -94,13 +97,14 @@ void *lista_quitar(lista_t *lista)
 	nodo_t *nodo = lista->nodo_fin;
 	void *elemento = lista->nodo_fin->elemento;
 
-	if (lista->nodo_inicio == lista->nodo_fin) {
+	if (lista_tamanio(lista) == 1) {
 		lista->nodo_inicio = NULL;
 		lista->nodo_fin = NULL;
-	} else {
+	} else {							//Posible problema de formato
 		nodo_t *nuevo_ultimo_nodo = 
 			buscar_nodo_por_posicion(lista->nodo_inicio,
-			 0, lista->cantidad_nodos - 2);
+						 POSICION_CERO,
+						 lista->cantidad_nodos - 2);
 		lista->nodo_fin = nuevo_ultimo_nodo;
 		nuevo_ultimo_nodo->siguiente = NULL;
 	}
@@ -117,25 +121,24 @@ void *lista_quitar_de_posicion(lista_t *lista, size_t posicion)
 		return NULL;
 
 	nodo_t *nodo = NULL;
-	void *elemento = NULL;
 
-	if (lista_tamanio(lista) == 1 || posicion >=
-	    (lista_tamanio(lista) - 1))
+	if (lista_tamanio(lista) == 1 ||
+	    posicion >= (lista_tamanio(lista) - 1))
 		return lista_quitar(lista);
 
-	if (posicion == 0) {
+	if (!posicion) {
 		nodo = lista->nodo_inicio;
 		lista->nodo_inicio = nodo->siguiente;
 	} else {
 		nodo_t *nodo_anterior_a_quitar =
-		 	buscar_nodo_por_posicion(lista->nodo_inicio, 0,
-		 			       	      posicion - 1);
+		 	buscar_nodo_por_posicion(lista->nodo_inicio,
+						 POSICION_CERO, posicion - 1);
 		nodo = nodo_anterior_a_quitar->siguiente;
 		nodo_anterior_a_quitar->siguiente = nodo->siguiente;
 	}
 
 	lista->cantidad_nodos--;
-	elemento = nodo->elemento;
+	void *elemento = nodo->elemento;
 	free(nodo);
 
 	return elemento;
@@ -146,8 +149,8 @@ void *lista_elemento_en_posicion(lista_t *lista, size_t posicion)
 	if (!lista || posicion >= lista->cantidad_nodos)
 		return NULL;
 
-	nodo_t *nodo = buscar_nodo_por_posicion(lista->nodo_inicio, 0,
-						     posicion);
+	nodo_t *nodo = buscar_nodo_por_posicion(lista->nodo_inicio,
+						POSICION_CERO, posicion);
 
 	return nodo->elemento;
 }
@@ -160,7 +163,7 @@ void *lista_buscar_elemento(lista_t *lista, int (*comparador)(void *, void *),
 
 	nodo_t *nodo = lista->nodo_inicio;
 
-	for (size_t i = 0; i < lista_tamanio(lista); i++) {
+	for (size_t i = POSICION_CERO; i < lista_tamanio(lista); i++) {
 		if (!comparador(nodo->elemento, contexto))
 			return nodo->elemento;
 
@@ -172,7 +175,7 @@ void *lista_buscar_elemento(lista_t *lista, int (*comparador)(void *, void *),
 
 void *lista_primero(lista_t *lista)
 {
-	if (!lista || lista->cantidad_nodos == 0)
+	if (!lista || lista_vacia(lista))
 		return NULL;
 
 	return lista->nodo_inicio->elemento;
@@ -180,7 +183,7 @@ void *lista_primero(lista_t *lista)
 
 void *lista_ultimo(lista_t *lista)
 {
-	if (!lista || lista->cantidad_nodos == 0)
+	if (!lista || lista_vacia(lista))
 		return NULL;
 
 	return lista->nodo_fin->elemento;
@@ -188,7 +191,7 @@ void *lista_ultimo(lista_t *lista)
 
 bool lista_vacia(lista_t *lista)
 {
-	if (!lista || lista->cantidad_nodos == 0)
+	if (!lista || !lista_tamanio(lista))
 		return true;
 
 	return false;
@@ -212,7 +215,7 @@ void lista_destruir_todo(lista_t *lista, void (*funcion)(void *))
 	if (!lista)
 		return;
 
-	while (lista->cantidad_nodos != 0) {
+	while (!lista_vacia(lista)) {
 		nodo_t *nodo_auxiliar = lista->nodo_inicio->siguiente;
 		if (funcion != NULL)
 			funcion(lista->nodo_inicio->elemento);
@@ -274,7 +277,8 @@ void lista_iterador_destruir(lista_iterador_t *iterador)
 	free(iterador);
 }
 
-size_t lista_con_cada_elemento(lista_t *lista, bool (*funcion)(void *, void *),
+size_t lista_con_cada_elemento(lista_t *lista,
+			       bool (*funcion)(void *, void *),
 			       void *contexto)
 {
 	if (!lista  || !funcion || lista_vacia(lista))

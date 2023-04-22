@@ -4,7 +4,7 @@
 #include <stddef.h>
 #include <stdlib.h>
 
-#define PRIMERA_POSICION 0
+#define POSICION_CERO 0
 
 pila_t *pila_crear()
 {
@@ -15,12 +15,12 @@ pila_t *pila_apilar(pila_t *pila, void *elemento)
 {
 	return (pila_t *)(lista_insertar_en_posicion((lista_t *)(pila),
 						     elemento,
-						     PRIMERA_POSICION));
+						     POSICION_CERO));
 }
 
 void *pila_desapilar(pila_t *pila)
 {
-	return lista_quitar_de_posicion((lista_t *)(pila), PRIMERA_POSICION);
+	return lista_quitar_de_posicion((lista_t *)(pila), POSICION_CERO);
 }
 
 void *pila_tope(pila_t *pila)
@@ -41,6 +41,4 @@ bool pila_vacia(pila_t *pila)
 void pila_destruir(pila_t *pila)
 {
 	lista_destruir((lista_t *)(pila));
-
-	return;
 }

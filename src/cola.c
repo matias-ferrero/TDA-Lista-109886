@@ -4,7 +4,7 @@
 #include <stddef.h>
 #include <stdlib.h>
 
-#define PRIMERA_POSICION 0
+#define POSICION_CERO 0
 
 cola_t *cola_crear()
 {
@@ -18,7 +18,7 @@ cola_t *cola_encolar(cola_t *cola, void *elemento)
 
 void *cola_desencolar(cola_t *cola)
 {
-	return lista_quitar_de_posicion((lista_t *)(cola), PRIMERA_POSICION);
+	return lista_quitar_de_posicion((lista_t *)(cola), POSICION_CERO);
 }
 
 void *cola_frente(cola_t *cola)
@@ -39,6 +39,4 @@ bool cola_vacia(cola_t *cola)
 void cola_destruir(cola_t *cola)
 {
 	lista_destruir((lista_t *)(cola));
-
-	return;
 }
