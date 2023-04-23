@@ -272,7 +272,7 @@ void pruebas_destruir_todos_los_elementos()
 	lista_insertar(lista, malloc(sizeof(pkm_para_destruir_t)));
 
 	lista_destruir_todo(lista, free);
-	printf("Destruir la lista con exito no debe perder memoria");
+	printf("Destruir la lista con exito no debe perder memoria\n");
 
 	return;
 }
@@ -345,6 +345,49 @@ void pruebas_del_tda_lista()
 
 	pa2m_nuevo_grupo("PRUEBAS DE PARAMETROS INVALIDOS");
 	pruebas_de_lista_con_parametros_invalidos();
+}
+
+/*
+-----------------------------------------------------------------------------
+*/
+
+void pruebas_de_creacion_y_destruccion_del_iterador_externo()
+{
+	lista_t * lista = lista_crear();	
+	lista_iterador_t *iterador = lista_iterador_crear(lista);
+
+	pa2m_afirmar(iterador != NULL, "Se puede crear el iterador");
+
+	lista_destruir(lista);
+	lista_iterador_destruir(iterador);
+	printf("Destruir el iterador con exito no debe perder memoria\n");
+}
+
+void pruebas_del_iterador_externo_con_lista_vacia()
+{
+	lista_t * lista = lista_crear();	
+	lista_iterador_t *iterador = lista_iterador_crear(lista);
+
+	pa2m_afirmar(!lista_iterador_tiene_siguiente(iterador),
+	             "No se encuentran elementos a iterar en una lista vacia");
+
+	pa2m_afirmar(!lista_iterador_avanzar(iterador),
+	             "No se puede iterar una lista vacia");
+
+	pa2m_afirmar(!lista_iterador_elemento_actual(iterador),
+	             "No se encuentran elementos en una lista vacia");
+
+	lista_destruir(lista);
+	lista_iterador_destruir(iterador);
+}
+
+void pruebas_del_iterador_externo_de_la_lista()
+{
+	pa2m_nuevo_grupo("PRUEBAS DE CREAR Y DESTRUIR UN ITERADOR EXTERNO");
+	pruebas_de_creacion_y_destruccion_del_iterador_externo();
+
+	pa2m_nuevo_grupo("PRUEBAS DEL ITERADOR EXTERNO CON UNA LISTA VACIA");
+	pruebas_del_iterador_externo_con_lista_vacia();
 }
 
 /*
@@ -498,50 +541,24 @@ void pruebas_del_tda_pila()
 -----------------------------------------------------------------------------
 */
 
-void pruebas_del_iterador_externo_de_la_lista()
-{
-	lista_t * lista = lista_crear();	
-	lista_iterador_t *iterador = lista_iterador_crear(lista);
-
-	pa2m_afirmar(iterador != NULL, "Se puede crear el iterador");
-
-	pa2m_afirmar(!lista_iterador_tiene_siguiente(iterador),
-	             "No se encuentran elementos a iterar en una lista vacia");
-
-	pa2m_afirmar(!lista_iterador_avanzar(iterador),
-	             "No se puede iterar una lista vacia");
-
-	pa2m_afirmar(!lista_iterador_elemento_actual(iterador),
-	             "No se encuentran elementos en una lista vacia");
-
-	//char a = 'a', b = 'b', c = 'c', d = 'd', w = 'w';
-	//char *valor;	
-
-	lista_iterador_destruir(iterador);
-}
-
-/*
------------------------------------------------------------------------------
-*/
-
 int main()
 {
 	pa2m_nuevo_grupo("----------- PRUEBAS DEL TP: TDA-LISTA -----------");
 
-	pa2m_nuevo_grupo("--- PRUEBAS DEL TDA-LISTA ---");
-	pruebas_del_tda_lista();
+	//pa2m_nuevo_grupo("--- PRUEBAS DEL TDA-LISTA ---");
+	//pruebas_del_tda_lista();
+	//printf("\n");
+
+	pa2m_nuevo_grupo("---PRUEBAS DEL ITERADOR EXTERNO");
+	pruebas_del_iterador_externo_de_la_lista();
 	printf("\n");
 
-	//pa2m_nuevo_grupo("---PRUEBAS DEL ITERADOR EXTERNO");
-	//pruebas_del_iterador_externo_de_la_lista();
-	//printf("/n");
+	//pa2m_nuevo_grupo("--- PRUEBAS DEL TDA-COLA ---");
+	//pruebas_del_tda_cola();
+	//printf("\n");
 
-	pa2m_nuevo_grupo("--- PRUEBAS DEL TDA-COLA ---");
-	pruebas_del_tda_cola();
-	printf("\n");
-
-	pa2m_nuevo_grupo("--- PRUEBAS DEL TDA-PILA ---");
-	pruebas_del_tda_pila();
+	//pa2m_nuevo_grupo("--- PRUEBAS DEL TDA-PILA ---");
+	//pruebas_del_tda_pila();
 
 	return pa2m_mostrar_reporte();
 }
