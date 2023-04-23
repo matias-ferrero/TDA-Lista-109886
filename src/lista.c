@@ -284,12 +284,12 @@ size_t lista_con_cada_elemento(lista_t *lista,
 	if (!lista  || !funcion || lista_vacia(lista))
 		return 0;
 
-	bool validar = true;
+	int validar_funcion = 0;
 	size_t iterados = 0;
 	nodo_t *nodo = lista->nodo_inicio;
 
-	while (validar && iterados < lista->cantidad_nodos) {
-		validar = funcion(nodo->elemento, contexto);
+	while (!validar_funcion && iterados < lista->cantidad_nodos) {
+		validar_funcion = funcion(nodo->elemento, contexto);
 		nodo = nodo->siguiente;
 		iterados++;
 	}

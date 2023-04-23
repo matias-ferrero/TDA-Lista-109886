@@ -24,6 +24,15 @@ int comparador(void *elemento, void*contexto)
 	return ERROR;
 }
 
+bool leer_elementos(void *elemento, void *contador)
+{
+	if (!elemento)
+		return false;
+
+	(*(size_t *)contador)++;
+	return true;	
+}
+
 void pruebas_de_creacion_y_destruccion()
 {
 	lista_t *lista = lista_crear();
@@ -126,27 +135,24 @@ void pruebas_quitar_al_final()
 	pa2m_afirmar(!lista_quitar(lista),
 		     "No se pueden quitar elementos de una lista vacia");
 
-	void *elemento1 = (void*)0x1234;
-	void *elemento2 = (void*)0x4321;
+	char a = 'a', b = 'b';
 
-	lista_insertar(lista, elemento1);
-	lista_insertar(lista, elemento2);
+	lista_insertar(lista, &a);
+	lista_insertar(lista, &b);
 
-	pa2m_afirmar(lista_quitar(lista) == elemento2,
+	pa2m_afirmar(lista_quitar(lista) == &b,
 		     "Se pueden quitar elementos del final de la lista");
 
-	pa2m_afirmar(lista_ultimo(lista) == elemento1 &&
-		     lista_tamanio(lista) == 1, "Se reajusta bien la lista");
+	pa2m_afirmar(lista_ultimo(lista) == &a && lista_tamanio(lista) == 1,
+		     "Se reajusta bien la lista");
 
 
-	pa2m_afirmar(lista_quitar(lista) == elemento1,
-		     "Se pueden quitar elementos de una lista con un solo elemento");
+	pa2m_afirmar(lista_quitar(lista) == &a,
+		     "Se puede quitar el unico elemento de la lista");
 
-	pa2m_afirmar(!lista_tamanio(lista) && lista_vacia(lista),
-		     "Se eliminan todos los elementos y la lista queda vacia");
-
-	pa2m_afirmar(!lista_primero(lista) && !lista_ultimo(lista),
-		     "Se reajusta bien la lista vacia");
+	pa2m_afirmar(!lista_tamanio(lista) && lista_vacia(lista) &&
+		     !lista_primero(lista) && !lista_ultimo(lista),
+		     "La lista queda vacia y reajustada");
 
 	lista_destruir(lista);
 }
@@ -156,41 +162,33 @@ void pruebas_quitar_en_cualquier_posicion()
 	lista_t *lista = lista_crear();
 
 	pa2m_afirmar(!lista_quitar_de_posicion(lista, 0),
-		     "No se pueden quitar elementos de cualquier posicion de una lista vacia");
+		     "No se pueden quitar elementos de una lista vacia");
 
-	void *elemento1 = (void*)0x1234;
-	void *elemento2 = (void*)0x4321;
-	void *elemento3 = (void*)0x1234;
-	void *elemento4 = (void*)0x4321;
-	void *elemento5 = (void*)0x4321;
+	int numeros[] = { 1, 2, 3, 4, 5 };
 
-	lista_insertar(lista, elemento1);
-	lista_insertar(lista, elemento2);
-	lista_insertar(lista, elemento3);
-	lista_insertar(lista, elemento4);
-	lista_insertar(lista, elemento5);
+	for (size_t i = 0; i < sizeof(numeros) / sizeof(int); i++)
+		lista_insertar(lista, &numeros[i]);
 
-	pa2m_afirmar(lista_quitar_de_posicion(lista, 0) == elemento1,
+
+	pa2m_afirmar(lista_quitar_de_posicion(lista, 0) == &numeros[0],
 		     "Se puede quitar el primer elemento de la lista");
 
-	pa2m_afirmar(lista_quitar_de_posicion(lista, 1) == elemento3,
+	pa2m_afirmar(lista_quitar_de_posicion(lista, 1) == &numeros[2],
 		     "Se pueden quitar elementos del medio de la lista");
 
-	pa2m_afirmar(lista_quitar_de_posicion(lista, 2) == elemento5,
+	pa2m_afirmar(lista_quitar_de_posicion(lista, 2) == &numeros[4],
 		     "Se puede quitar el ultimo elemento de la lista");
 
-	pa2m_afirmar(lista_quitar_de_posicion(lista, 100) == elemento4,
-		     "Se pueden quitar elementos de una posicion inexistente");
+	pa2m_afirmar(lista_quitar_de_posicion(lista, 100) == &numeros[3],
+		     "Se pueden quitar elementos de posiciones inexistentes");
 
-	pa2m_afirmar(lista_quitar_de_posicion(lista, 0) == elemento2,
+	pa2m_afirmar(lista_quitar_de_posicion(lista, 0) == &numeros[1],
 		     "Se puede quitar el unico elemento de la lista");
 
 
-	pa2m_afirmar(!lista_tamanio(lista) && lista_vacia(lista),
-		     "Se eliminan todos los elementos y la lista queda vacia");
-
-	pa2m_afirmar(!lista_primero(lista) && !lista_ultimo(lista),
-		     "Se reajusta bien la lista vacia");
+	pa2m_afirmar(!lista_tamanio(lista) && lista_vacia(lista) &&
+		     !lista_primero(lista) && !lista_ultimo(lista),
+		     "La lista queda vacia y reajustada");
 
 	lista_destruir(lista);
 }
@@ -202,21 +200,18 @@ void pruebas_buscar_por_posicion()
 	pa2m_afirmar(lista_elemento_en_posicion(lista, 0) == NULL,
 		     "No se pueden buscar elementos de una lista vacia");
 
-	void *elemento1 = (void*)0x1234;
-	void *elemento2 = (void*)0x4321;
-	void *elemento3 = (void*)0x1234;
+	int numeros[] = { 1, 2, 3 };
 
-	lista_insertar_en_posicion(lista, elemento1, 0);
-	lista_insertar_en_posicion(lista, elemento2, 1);
-	lista_insertar_en_posicion(lista, elemento3, 2);
+	for (size_t i = 0; i < sizeof(numeros) / sizeof(int); i++)
+		lista_insertar_en_posicion(lista, &numeros[i], i);
 
-	pa2m_afirmar(lista_elemento_en_posicion(lista, 0) == elemento1,
+	pa2m_afirmar(lista_elemento_en_posicion(lista, 0) == &numeros[0],
 		     "Se puede encontrar el primer elemento de la lista");
 
-	pa2m_afirmar(lista_elemento_en_posicion(lista, 1) == elemento2,
+	pa2m_afirmar(lista_elemento_en_posicion(lista, 1) == &numeros[1],
 		     "Se pueden encontrar elementos en el medio de la lista");
 
-	pa2m_afirmar(lista_elemento_en_posicion(lista, 2) == elemento3,
+	pa2m_afirmar(lista_elemento_en_posicion(lista, 2) == &numeros[2],
 		     "Se puede encontrar el ultimo elemento de la lista");
 
 	lista_destruir(lista);
@@ -226,28 +221,46 @@ void pruebas_buscar_por_condicion()
 {
 	lista_t *lista = lista_crear();
 
-	void *contexto = (void*)0x4321;
+	pa2m_afirmar(!lista_buscar_elemento(lista, comparador, NULL),
+		     "No se pueden buscar elementos de una lista vacia");
 
-	pa2m_afirmar(!lista_buscar_elemento(lista, comparador, contexto),
-		     "No se puede buscar un elemento con cualquier condicion de una lista vacia");
+	int numeros[] = { 1, 2, 3 };
 
-	void *elemento1 = (void*)0x1234;
-	void *elemento2 = (void*)0x4321;
-	void *elemento3 = (void*)0x1234;
+	for (size_t i = 0; i < sizeof(numeros) / sizeof(int); i++)
+		lista_insertar(lista, &numeros[i]);
 
-	lista_insertar_en_posicion(lista, elemento1, 0);
-	lista_insertar_en_posicion(lista, elemento2, 1);
-	lista_insertar_en_posicion(lista, elemento3, 2);
+	void *elemento_buscado = lista_buscar_elemento(lista, comparador,
+						       &numeros[2]);
+	pa2m_afirmar(elemento_buscado == &numeros[2],
+		     "Se puede buscar un elemento con cualquier condicion");
 
-	pa2m_afirmar(lista_buscar_elemento(lista, comparador, contexto) == elemento2,
-		     "Se puede buscar un elemento con cualquier condicion de una lista");
-
-	pa2m_afirmar(lista_buscar_elemento(lista, comparador, NULL) == NULL,
+	pa2m_afirmar(!lista_buscar_elemento(lista, comparador, NULL),
 		     "No encontrar el elemento devuelve NULL");
 
 	lista_destruir(lista);
 }
-/*
+
+void pruebas_del_iterador_interno()
+{
+	lista_t *lista = lista_crear();
+
+	pa2m_afirmar(!lista_con_cada_elemento(lista, leer_elementos, NULL),
+		     "Iterar una lista vacia devuelve 0 elementos iterados");
+
+	int numeros[] = { 1, 2, 3, 0, 4};
+	size_t contador = 0;
+
+	for (size_t i = 0; i < sizeof(numeros) / sizeof(int); i++)
+		lista_insertar(lista, &numeros[i]);
+
+	size_t iterados = lista_con_cada_elemento(lista, leer_elementos,
+						  (void *)&contador);
+	pa2m_afirmar(iterados == contador,
+		     "Se pueden leer los elementos con el iterador interno");
+
+	lista_destruir(lista);
+}
+
 void pruebas_destruir_todos_los_elementos()
 {
 	lista_t *lista = lista_crear();
@@ -259,44 +272,47 @@ void pruebas_destruir_todos_los_elementos()
 	lista_insertar(lista, malloc(sizeof(pkm_para_destruir_t)));
 
 	lista_destruir_todo(lista, free);
-	printf("\nDestruir la lista con exito no debe perder memoria\n");
+	printf("Destruir la lista con exito no debe perder memoria");
 
 	return;
 }
-*/
+
 void pruebas_de_lista_con_parametros_invalidos()
 {
 	lista_t *lista = lista_crear();
 
-	void *elemento = (void*)0x1234;
-	void *contexto = (void*)0x4321;
+	pa2m_afirmar(!lista_insertar(NULL, NULL),
+		     "Insertar elementos a una lista que no existe da error");
 
-	pa2m_afirmar(!lista_insertar(NULL, elemento),
-		     "No se puede insertar un elemento a una lista que no existe");
-
-	pa2m_afirmar(!lista_insertar_en_posicion(NULL, elemento, 0),
-		     "No se puede insertar un elemento en cualquier posicion a una lista que no existe");
+	pa2m_afirmar(!lista_insertar_en_posicion(NULL, NULL, 0),
+		     "Insertar al inicio a una lista que no existe da error");
 
 	pa2m_afirmar(!lista_quitar(NULL),
-		     "No se puede quitar un elemento de una lista que no existe");
+		     "Quitar elementos de una lista que no existe da error");
 
 	pa2m_afirmar(!lista_quitar_de_posicion(NULL, 0),
-		     "No se puede quitar un elemento de cualquier posicion de una lista que no existe");
+		     "Quitar al inicio de una lista que no existe da error");
 
 	pa2m_afirmar(!lista_elemento_en_posicion(NULL, 0),
-		     "No se puede buscar un elemento de cualquier posicion de una lista que no existe");
+		     "Buscar por posicion en listas que no existen da error");
 
-	pa2m_afirmar(!lista_buscar_elemento(NULL, comparador, contexto),
-		     "No se puede buscar un elemento con cualquier condicion de una lista que no existe");
+	pa2m_afirmar(!lista_buscar_elemento(NULL, comparador, NULL),
+		     "Buscar por contexto en listas que no existen da error");
 
-	pa2m_afirmar(!lista_buscar_elemento(lista, NULL, elemento),
-		     "No se puede buscar un elemento de una lista con una funcion comparador que no existe");
+	pa2m_afirmar(!lista_buscar_elemento(lista, NULL, NULL),
+		     "Buscar con funcion comparadora nula da error");
+
+	pa2m_afirmar(!lista_con_cada_elemento(NULL, leer_elementos, NULL),
+		     "Iterar elementos en una lista que no existe da error");
+
+	pa2m_afirmar(!lista_con_cada_elemento(lista, NULL, NULL),
+		     "Iterar elementos con una funcion nula da error");
 
 	lista_destruir(lista);
 }
 
 void pruebas_del_tda_lista()
-{/*
+{
 	pa2m_nuevo_grupo("PRUEBAS DE CREACION Y DESTRUCCION");
 	pruebas_de_creacion_y_destruccion();
 
@@ -305,10 +321,10 @@ void pruebas_del_tda_lista()
 
 	pa2m_nuevo_grupo("PRUEBAS DE LEER UNA LISTA");
 	pruebas_leer_lista();
-*/
+
 	pa2m_nuevo_grupo("PRUEBAS DE INSERTAR EN CUALQUIER POSICION");
 	pruebas_insertar_en_cualquier_posicion();
-/*
+
 	pa2m_nuevo_grupo("PRUEBAS DE QUITAR Y DESTRUIR ELEMENTOS");
 	pruebas_quitar_al_final();
 
@@ -321,12 +337,14 @@ void pruebas_del_tda_lista()
 	pa2m_nuevo_grupo("PRUEBAS DE BUSCAR ELEMENTOS POR CONDICION");
 	pruebas_buscar_por_condicion();
 
-	//pa2m_nuevo_grupo("PRUEBAS DE DESTRUIR TODOS LOS ELEMENTOS");
-	//pruebas_destruir_todos_los_elementos();
+	pa2m_nuevo_grupo("PRUEBAS DEL ITERADOR INTERNO");
+	pruebas_del_iterador_interno();
+
+	pa2m_nuevo_grupo("PRUEBAS DE DESTRUIR TODOS LOS ELEMENTOS");
+	pruebas_destruir_todos_los_elementos();
 
 	pa2m_nuevo_grupo("PRUEBAS DE PARAMETROS INVALIDOS");
 	pruebas_de_lista_con_parametros_invalidos();
-*/
 }
 
 /*
@@ -514,55 +532,16 @@ int main()
 	pruebas_del_tda_lista();
 	printf("\n");
 
-	pa2m_nuevo_grupo("---PRUEBAS DEL ITERADOR EXTERNO");
-	pruebas_del_iterador_externo_de_la_lista();
-	printf("/n");
-/*
+	//pa2m_nuevo_grupo("---PRUEBAS DEL ITERADOR EXTERNO");
+	//pruebas_del_iterador_externo_de_la_lista();
+	//printf("/n");
+
 	pa2m_nuevo_grupo("--- PRUEBAS DEL TDA-COLA ---");
 	pruebas_del_tda_cola();
 	printf("\n");
 
 	pa2m_nuevo_grupo("--- PRUEBAS DEL TDA-PILA ---");
 	pruebas_del_tda_pila();
-*/
+
 	return pa2m_mostrar_reporte();
 }
-
-/*
-pa2m_afirmar(lista_insertar_en_posicion(lista, elemento1, 0) != NULL,
-		     "Se puede insertar al principio de una lista vacia");
-
-	pa2m_afirmar(lista_primero(lista) == elemento1,
-		     "El elemento ingresado es el primero en la lista");
-
-	pa2m_afirmar(lista_ultimo(lista) == elemento1,
-		      "El elemento ingresado es el ultimo en la lista");
-
-
-	pa2m_afirmar(lista_insertar_en_posicion(lista, elemento2, 1) != NULL,
-		     "Se puede insertar a continuacion del primer elemento");
-
-	pa2m_afirmar(lista_ultimo(lista) == elemento2,
-		      "Ahora el segundo elemento ingresado es el ultimo de la lista");
-
-
-	pa2m_afirmar(lista_insertar_en_posicion(lista, elemento2, 0) != NULL,
-		     "Se puede insertar otra vez al principio de la lista");
-
-	pa2m_afirmar(lista_primero(lista) == elemento2,
-		     "Ahora el tercer elemento ingresado es el primero de la lista");
-
-
-	pa2m_afirmar(lista_insertar_en_posicion(lista, elemento1, 100) != NULL,
-		     "Se puede insertar un elemento en una posicion inexistente");
-
-	pa2m_afirmar(lista_ultimo(lista) == elemento1,
-		      "El elemento ingresado ahora es el ultimo de la lista");
-
-
-	pa2m_afirmar(lista_insertar_en_posicion(lista, NULL, 2) != NULL,
-		     "Se puede insertar NULL cualquier posicion");
-	
-	pa2m_afirmar(lista_tamanio(lista) == 5,
-		     "Se insertaron 5 elementos, y el tamanio es 5");
-*/
