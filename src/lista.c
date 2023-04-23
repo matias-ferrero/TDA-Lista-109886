@@ -26,7 +26,7 @@ nodo_t *buscar_nodo_por_posicion(nodo_t *nodo, size_t posicion_en_lista,
 {
 	if (posicion_buscada != posicion_en_lista)
 		nodo = buscar_nodo_por_posicion(nodo->siguiente,
-			 			posicion_en_lista + 1,
+						posicion_en_lista + 1,
 						posicion_buscada);
 
 	return nodo;
@@ -75,10 +75,9 @@ lista_t *lista_insertar_en_posicion(lista_t *lista, void *elemento,
 	if (!posicion) {
 		nodo->siguiente = lista->nodo_inicio;
 		lista->nodo_inicio = nodo;
-	} else {							//Posible problema de formato
-		nodo_t *nodo_anterior_a_insertar =
-			buscar_nodo_por_posicion(lista->nodo_inicio,
-						 POSICION_CERO, posicion - 1);
+	} else { //Posible problema de formato
+		nodo_t *nodo_anterior_a_insertar = buscar_nodo_por_posicion(
+			lista->nodo_inicio, POSICION_CERO, posicion - 1);
 		nodo->siguiente = nodo_anterior_a_insertar->siguiente;
 		nodo_anterior_a_insertar->siguiente = nodo;
 	}
@@ -100,11 +99,10 @@ void *lista_quitar(lista_t *lista)
 	if (lista_tamanio(lista) == 1) {
 		lista->nodo_inicio = NULL;
 		lista->nodo_fin = NULL;
-	} else {							//Posible problema de formato
-		nodo_t *nuevo_ultimo_nodo = 
-			buscar_nodo_por_posicion(lista->nodo_inicio,
-						 POSICION_CERO,
-						 lista->cantidad_nodos - 2);
+	} else { //Posible problema de formato
+		nodo_t *nuevo_ultimo_nodo = buscar_nodo_por_posicion(
+			lista->nodo_inicio, POSICION_CERO,
+			lista->cantidad_nodos - 2);
 		lista->nodo_fin = nuevo_ultimo_nodo;
 		nuevo_ultimo_nodo->siguiente = NULL;
 	}
@@ -122,17 +120,15 @@ void *lista_quitar_de_posicion(lista_t *lista, size_t posicion)
 
 	nodo_t *nodo = NULL;
 
-	if (lista_tamanio(lista) == 1 ||
-	    posicion >= (lista_tamanio(lista) - 1))
+	if (lista_tamanio(lista) == 1 || posicion >= (lista_tamanio(lista) - 1))
 		return lista_quitar(lista);
 
 	if (!posicion) {
 		nodo = lista->nodo_inicio;
 		lista->nodo_inicio = nodo->siguiente;
 	} else {
-		nodo_t *nodo_anterior_a_quitar =
-		 	buscar_nodo_por_posicion(lista->nodo_inicio,
-						 POSICION_CERO, posicion - 1);
+		nodo_t *nodo_anterior_a_quitar = buscar_nodo_por_posicion(
+			lista->nodo_inicio, POSICION_CERO, posicion - 1);
 		nodo = nodo_anterior_a_quitar->siguiente;
 		nodo_anterior_a_quitar->siguiente = nodo->siguiente;
 	}
@@ -278,11 +274,10 @@ void lista_iterador_destruir(lista_iterador_t *iterador)
 	free(iterador);
 }
 
-size_t lista_con_cada_elemento(lista_t *lista,
-			       bool (*funcion)(void *, void *),
+size_t lista_con_cada_elemento(lista_t *lista, bool (*funcion)(void *, void *),
 			       void *contexto)
 {
-	if (!lista  || !funcion || lista_vacia(lista))
+	if (!lista || !funcion || lista_vacia(lista))
 		return 0;
 
 	bool validar_funcion = true;

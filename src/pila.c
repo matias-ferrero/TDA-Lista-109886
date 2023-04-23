@@ -14,8 +14,7 @@ pila_t *pila_crear()
 pila_t *pila_apilar(pila_t *pila, void *elemento)
 {
 	return (pila_t *)(lista_insertar_en_posicion((lista_t *)(pila),
-						     elemento,
-						     POSICION_CERO));
+						     elemento, POSICION_CERO));
 }
 
 void *pila_desapilar(pila_t *pila)

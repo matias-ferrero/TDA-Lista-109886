@@ -16,7 +16,7 @@ typedef struct {
 	char *nombre;
 } pkm_para_destruir_t;
 
-int comparador(void *elemento, void*contexto)
+int comparador(void *elemento, void *contexto)
 {
 	if (elemento == contexto)
 		return 0;
@@ -30,7 +30,7 @@ bool leer_elementos(void *elemento, void *contador)
 		return false;
 
 	(*(size_t *)contador)++;
-	return true;	
+	return true;
 }
 
 void pruebas_de_creacion_y_destruccion()
@@ -39,8 +39,8 @@ void pruebas_de_creacion_y_destruccion()
 	pa2m_afirmar(lista != NULL, "Se puede crear una lista correctamente");
 
 	pa2m_afirmar(!lista_tamanio(lista) && !lista_primero(lista) &&
-	 	     !lista_ultimo(lista) && lista_vacia(lista),
-	  	     "La lista esta vacia");
+			     !lista_ultimo(lista) && lista_vacia(lista),
+		     "La lista esta vacia");
 
 	lista_destruir(lista);
 }
@@ -118,7 +118,6 @@ void pruebas_insertar_en_cualquier_posicion()
 	pa2m_afirmar(lista_insertar_en_posicion(lista, &e, 100) != NULL,
 		     "Se puede insertar en una posicion inexistente");
 
-
 	pa2m_afirmar(lista_primero(lista) == &a && lista_ultimo(lista) == &e,
 		     "Se puede obtener el inicio y el fin de la lista");
 
@@ -146,12 +145,11 @@ void pruebas_quitar_al_final()
 	pa2m_afirmar(lista_ultimo(lista) == &a && lista_tamanio(lista) == 1,
 		     "Se reajusta bien la lista");
 
-
 	pa2m_afirmar(lista_quitar(lista) == &a,
 		     "Se puede quitar el unico elemento de la lista");
 
 	pa2m_afirmar(!lista_tamanio(lista) && lista_vacia(lista) &&
-		     !lista_primero(lista) && !lista_ultimo(lista),
+			     !lista_primero(lista) && !lista_ultimo(lista),
 		     "La lista queda vacia y reajustada");
 
 	lista_destruir(lista);
@@ -169,7 +167,6 @@ void pruebas_quitar_en_cualquier_posicion()
 	for (size_t i = 0; i < sizeof(numeros) / sizeof(int); i++)
 		lista_insertar(lista, &numeros[i]);
 
-
 	pa2m_afirmar(lista_quitar_de_posicion(lista, 0) == &numeros[0],
 		     "Se puede quitar el primer elemento de la lista");
 
@@ -185,9 +182,8 @@ void pruebas_quitar_en_cualquier_posicion()
 	pa2m_afirmar(lista_quitar_de_posicion(lista, 0) == &numeros[1],
 		     "Se puede quitar el unico elemento de la lista");
 
-
 	pa2m_afirmar(!lista_tamanio(lista) && lista_vacia(lista) &&
-		     !lista_primero(lista) && !lista_ultimo(lista),
+			     !lista_primero(lista) && !lista_ultimo(lista),
 		     "La lista queda vacia y reajustada");
 
 	lista_destruir(lista);
@@ -229,8 +225,8 @@ void pruebas_buscar_por_condicion()
 	for (size_t i = 0; i < sizeof(numeros) / sizeof(int); i++)
 		lista_insertar(lista, &numeros[i]);
 
-	void *elemento_buscado = lista_buscar_elemento(lista, comparador,
-						       &numeros[2]);
+	void *elemento_buscado =
+		lista_buscar_elemento(lista, comparador, &numeros[2]);
 	pa2m_afirmar(elemento_buscado == &numeros[2],
 		     "Se puede buscar un elemento con cualquier condicion");
 
@@ -247,7 +243,7 @@ void pruebas_del_iterador_interno()
 	pa2m_afirmar(!lista_con_cada_elemento(lista, leer_elementos, NULL),
 		     "Iterar una lista vacia devuelve 0 elementos iterados");
 
-	int numeros[] = { 1, 2, 3, 0, 4};
+	int numeros[] = { 1, 2, 3, 0, 4 };
 	size_t contador = 0;
 
 	for (size_t i = 0; i < sizeof(numeros) / sizeof(int); i++)
@@ -353,7 +349,7 @@ void pruebas_del_tda_lista()
 
 void pruebas_de_creacion_y_destruccion_del_iterador_externo()
 {
-	lista_t * lista = lista_crear();
+	lista_t *lista = lista_crear();
 	lista_iterador_t *iterador = lista_iterador_crear(lista);
 
 	pa2m_afirmar(iterador != NULL, "Se puede crear el iterador");
@@ -365,17 +361,17 @@ void pruebas_de_creacion_y_destruccion_del_iterador_externo()
 
 void pruebas_del_iterador_externo_con_lista_vacia()
 {
-	lista_t * lista = lista_crear();
+	lista_t *lista = lista_crear();
 	lista_iterador_t *iterador = lista_iterador_crear(lista);
 
 	pa2m_afirmar(!lista_iterador_tiene_siguiente(iterador),
-	             "No se encuentra elemento siguiente en una lista vacia");
+		     "No se encuentra elemento siguiente en una lista vacia");
 
 	pa2m_afirmar(!lista_iterador_avanzar(iterador),
-	             "No se puede iterar una lista vacia");
+		     "No se puede iterar una lista vacia");
 
 	pa2m_afirmar(!lista_iterador_elemento_actual(iterador),
-	             "No se encuentran elementos en una lista vacia");
+		     "No se encuentran elementos en una lista vacia");
 
 	lista_destruir(lista);
 	lista_iterador_destruir(iterador);
@@ -383,7 +379,7 @@ void pruebas_del_iterador_externo_con_lista_vacia()
 
 void pruebas_de_avanzar_el_iterador_externo()
 {
-	lista_t * lista = lista_crear();
+	lista_t *lista = lista_crear();
 	int numeros[] = { 1, 2 };
 
 	for (size_t i = 0; i < sizeof(numeros) / sizeof(int); i++)
@@ -392,22 +388,22 @@ void pruebas_de_avanzar_el_iterador_externo()
 	lista_iterador_t *iterador = lista_iterador_crear(lista);
 
 	pa2m_afirmar(lista_iterador_tiene_siguiente(iterador),
-	             "Se encuentra el siguiente nodo a iterar");
+		     "Se encuentra el siguiente nodo a iterar");
 
 	pa2m_afirmar(lista_iterador_avanzar(iterador),
-	             "Se puede iterar el siguiente nodo");
+		     "Se puede iterar el siguiente nodo");
 
 	pa2m_afirmar(lista_iterador_tiene_siguiente(iterador),
-	             "Se encuentra otro nodo mas a iterar");
+		     "Se encuentra otro nodo mas a iterar");
 
 	pa2m_afirmar(lista_iterador_avanzar(iterador),
-	             "Se puede iterar el ultimo nodo");
+		     "Se puede iterar el ultimo nodo");
 
 	pa2m_afirmar(!lista_iterador_tiene_siguiente(iterador),
-	             "No se encuentran mas nodos para iterar");
+		     "No se encuentran mas nodos para iterar");
 
 	pa2m_afirmar(!lista_iterador_avanzar(iterador),
-	             "No se pueden iterar nodos que no existen");
+		     "No se pueden iterar nodos que no existen");
 
 	lista_destruir(lista);
 	lista_iterador_destruir(iterador);
@@ -415,7 +411,7 @@ void pruebas_de_avanzar_el_iterador_externo()
 
 void pruebas_de_mostrar_elementos_iterados()
 {
-	lista_t * lista = lista_crear();
+	lista_t *lista = lista_crear();
 	lista_iterador_t *iterador = NULL;
 	int numeros[] = { 1, 2, 3 };
 	size_t i;
@@ -473,7 +469,7 @@ void pruebas_operaciones_cola()
 		pa2m_afirmar(cola_encolar(cola, &numeros[i]) != NULL,
 			     "Se pudo encolar un elemento");
 		pa2m_afirmar(cola_tamanio(cola) == i + 1,
-		             "La cola actualizo su tamanio correctamente");
+			     "La cola actualizo su tamanio correctamente");
 	}
 
 	pa2m_afirmar(!cola_vacia(cola) && cola_frente(cola) == &numeros[0],
@@ -547,7 +543,7 @@ void pruebas_operaciones_pila()
 		pa2m_afirmar(pila_apilar(pila, &algo[i]) != NULL,
 			     "Se pudo encolar un elemento");
 		pa2m_afirmar(pila_tamanio(pila) == i + 1,
-		             "La pila actualizo su tamanio correctamente");
+			     "La pila actualizo su tamanio correctamente");
 	}
 
 	pa2m_afirmar(!pila_vacia(pila) && pila_tope(pila) == &algo[i - 1],
@@ -555,8 +551,7 @@ void pruebas_operaciones_pila()
 
 	printf("\nDesapilo y muestro los elementos apilados:\n");
 	while (!pila_vacia(pila))
-		pa2m_afirmar(pila_desapilar(pila) != NULL,
-			     "Se pudo desapilar");
+		pa2m_afirmar(pila_desapilar(pila) != NULL, "Se pudo desapilar");
 
 	printf("\n");
 
