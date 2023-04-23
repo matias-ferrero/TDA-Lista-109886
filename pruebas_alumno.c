@@ -353,7 +353,7 @@ void pruebas_del_tda_lista()
 
 void pruebas_de_creacion_y_destruccion_del_iterador_externo()
 {
-	lista_t * lista = lista_crear();	
+	lista_t * lista = lista_crear();
 	lista_iterador_t *iterador = lista_iterador_crear(lista);
 
 	pa2m_afirmar(iterador != NULL, "Se puede crear el iterador");
@@ -365,17 +365,72 @@ void pruebas_de_creacion_y_destruccion_del_iterador_externo()
 
 void pruebas_del_iterador_externo_con_lista_vacia()
 {
-	lista_t * lista = lista_crear();	
+	lista_t * lista = lista_crear();
 	lista_iterador_t *iterador = lista_iterador_crear(lista);
 
 	pa2m_afirmar(!lista_iterador_tiene_siguiente(iterador),
-	             "No se encuentran elementos a iterar en una lista vacia");
+	             "No se encuentra elemento siguiente en una lista vacia");
 
 	pa2m_afirmar(!lista_iterador_avanzar(iterador),
 	             "No se puede iterar una lista vacia");
 
 	pa2m_afirmar(!lista_iterador_elemento_actual(iterador),
 	             "No se encuentran elementos en una lista vacia");
+
+	lista_destruir(lista);
+	lista_iterador_destruir(iterador);
+}
+
+void pruebas_de_avanzar_el_iterador_externo()
+{
+	lista_t * lista = lista_crear();
+	int numeros[] = { 1, 2 };
+
+	for (size_t i = 0; i < sizeof(numeros) / sizeof(int); i++)
+		lista_insertar(lista, &numeros[i]);
+
+	lista_iterador_t *iterador = lista_iterador_crear(lista);
+
+	pa2m_afirmar(lista_iterador_tiene_siguiente(iterador),
+	             "Se encuentra el siguiente nodo a iterar");
+
+	pa2m_afirmar(lista_iterador_avanzar(iterador),
+	             "Se puede iterar el siguiente nodo");
+
+	pa2m_afirmar(lista_iterador_tiene_siguiente(iterador),
+	             "Se encuentra otro nodo mas a iterar");
+
+	pa2m_afirmar(lista_iterador_avanzar(iterador),
+	             "Se puede iterar el ultimo nodo");
+
+	pa2m_afirmar(!lista_iterador_tiene_siguiente(iterador),
+	             "No se encuentran mas nodos para iterar");
+
+	pa2m_afirmar(!lista_iterador_avanzar(iterador),
+	             "No se pueden iterar nodos que no existen");
+
+	lista_destruir(lista);
+	lista_iterador_destruir(iterador);
+}
+
+void pruebas_de_mostrar_elementos_iterados()
+{
+	lista_t * lista = lista_crear();
+	lista_iterador_t *iterador = NULL;
+	int numeros[] = { 1, 2, 3 };
+	size_t i;
+
+	for (i = 0; i < sizeof(numeros) / sizeof(int); i++)
+		lista_insertar(lista, &numeros[i]);
+
+	for (iterador = lista_iterador_crear(lista);
+	     lista_iterador_tiene_siguiente(iterador);
+	     lista_iterador_avanzar(iterador)) {
+		void *elemento = lista_iterador_elemento_actual(iterador);
+		pa2m_afirmar(elemento == &numeros[i],
+			     "Se puede encontrar el elemento iterado");
+		i++;
+	}
 
 	lista_destruir(lista);
 	lista_iterador_destruir(iterador);
@@ -388,6 +443,12 @@ void pruebas_del_iterador_externo_de_la_lista()
 
 	pa2m_nuevo_grupo("PRUEBAS DEL ITERADOR EXTERNO CON UNA LISTA VACIA");
 	pruebas_del_iterador_externo_con_lista_vacia();
+
+	pa2m_nuevo_grupo("PRUEBAS DE AVANZAR ELEMENTOS CON EL ITERADOR");
+	pruebas_de_avanzar_el_iterador_externo();
+
+	pa2m_nuevo_grupo("PRUEBAS DE MOSTRAR ELEMENTOS CON EL ITERADOR");
+	pruebas_de_mostrar_elementos_iterados();
 }
 
 /*

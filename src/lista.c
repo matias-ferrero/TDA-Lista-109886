@@ -258,7 +258,8 @@ bool lista_iterador_avanzar(lista_iterador_t *iterador)
 
 	if (lista_iterador_tiene_siguiente(iterador)) {
 		iterador->nodo = iterador->nodo->siguiente;
-		return iterador->nodo != NULL;
+		if (iterador->nodo != NULL)
+			return true;
 	}
 
 	return false;
@@ -284,11 +285,11 @@ size_t lista_con_cada_elemento(lista_t *lista,
 	if (!lista  || !funcion || lista_vacia(lista))
 		return 0;
 
-	int validar_funcion = 0;
+	bool validar_funcion = true;
 	size_t iterados = 0;
 	nodo_t *nodo = lista->nodo_inicio;
 
-	while (!validar_funcion && iterados < lista->cantidad_nodos) {
+	while (validar_funcion && iterados < lista->cantidad_nodos) {
 		validar_funcion = funcion(nodo->elemento, contexto);
 		nodo = nodo->siguiente;
 		iterados++;
