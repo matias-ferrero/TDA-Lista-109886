@@ -57,4 +57,43 @@ vector_original = vector;
 ---
 
 ## Respuestas a las preguntas teóricas
+
 - ¿Qué es una lista/pila/cola? Explicar con diagramas.
+Tanto una lista, como una pila, como una cola, son tres tipos distintos de TDA (tipos de datos abstractos). Estos tres TDA’s guardan elementos mediante algunas operaciones que funcionan diferente según qué TDA sea, pero que los tres tienen en común:
+-Crear TDA
+-Guardar elemento
+-Leer elemento
+-Quitar elemento
+-Verificar si está vacía
+-Destruir TDA
+
+Puntualmente, la pila y la cola tienen características particulares; la pila tiene una política LIFO y la cola tiene una política FIFO.
+LIFO quiere decir “Last In First Out”, o en español, el último en entrar es el primero en salir. Eso quiere decir que en las pilas, el último elemento guardado es el primero en ser quitado, de forma que solo conocemos el tope de las pilas, y por ende, solo podemos leer el tope por muchos elementos que haya.
+
+<div align="center">
+<img width="70%" src="img/diagrama_de_pila.jpg">
+</div>
+
+<div align="center">
+<img width="70%" src="img/diagrama_de_apilar.jpg">
+</div>
+
+<div align="center">
+<img width="70%" src="img/diagrama_de_desapilar.jpg">
+</div>
+
+Por otro lado FIFO quiere decir “First In First Out”, o en español, el primero en entrar es el primero en salir. Gracias a esto, las colas funcionan de forma diferente; el primer elemento guardado en las colas es el primero en ser quitado. Con las colas, se pueden guardar varios elementos pero sólo podremos leer y quitar su frente.
+
+<div align="center">
+<img width="70%" src="img/diagrama_de_cola.jpg">
+</div>
+
+<div align="center">
+<img width="70%" src="img/diagrama_de_encolar.jpg">
+</div>
+
+<div align="center">
+<img width="70%" src="img/diagrama_de_desencolar.jpg">
+</div>
+
+Las listas no tienen política LIFO o FIFO, por lo que podemos guardar, quitar o leer elementos en cualquier posición.
