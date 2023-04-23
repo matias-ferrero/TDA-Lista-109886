@@ -75,7 +75,7 @@ lista_t *lista_insertar_en_posicion(lista_t *lista, void *elemento,
 	if (!posicion) {
 		nodo->siguiente = lista->nodo_inicio;
 		lista->nodo_inicio = nodo;
-	} else { //Posible problema de formato
+	} else {
 		nodo_t *nodo_anterior_a_insertar = buscar_nodo_por_posicion(
 			lista->nodo_inicio, POSICION_CERO, posicion - 1);
 		nodo->siguiente = nodo_anterior_a_insertar->siguiente;
@@ -99,7 +99,7 @@ void *lista_quitar(lista_t *lista)
 	if (lista_tamanio(lista) == 1) {
 		lista->nodo_inicio = NULL;
 		lista->nodo_fin = NULL;
-	} else { //Posible problema de formato
+	} else {
 		nodo_t *nuevo_ultimo_nodo = buscar_nodo_por_posicion(
 			lista->nodo_inicio, POSICION_CERO,
 			lista->cantidad_nodos - 2);

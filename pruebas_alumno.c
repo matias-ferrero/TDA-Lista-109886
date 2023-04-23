@@ -391,13 +391,13 @@ void pruebas_de_avanzar_el_iterador_externo()
 		     "Se encuentra el siguiente nodo a iterar");
 
 	pa2m_afirmar(lista_iterador_avanzar(iterador),
-		     "Se puede iterar el siguiente nodo");
+		     "Se puede iterar al siguiente nodo");
 
 	pa2m_afirmar(lista_iterador_tiene_siguiente(iterador),
 		     "Se encuentra otro nodo mas a iterar");
 
-	pa2m_afirmar(lista_iterador_avanzar(iterador),
-		     "Se puede iterar el ultimo nodo");
+	pa2m_afirmar(!lista_iterador_avanzar(iterador),
+		     "Se puede iterar el nodo, y no hay mas nodos a iterar");
 
 	pa2m_afirmar(!lista_iterador_tiene_siguiente(iterador),
 		     "No se encuentran mas nodos para iterar");
@@ -419,6 +419,7 @@ void pruebas_de_mostrar_elementos_iterados()
 	for (i = 0; i < sizeof(numeros) / sizeof(int); i++)
 		lista_insertar(lista, &numeros[i]);
 
+	i = 0;
 	for (iterador = lista_iterador_crear(lista);
 	     lista_iterador_tiene_siguiente(iterador);
 	     lista_iterador_avanzar(iterador)) {
@@ -427,6 +428,9 @@ void pruebas_de_mostrar_elementos_iterados()
 			     "Se puede encontrar el elemento iterado");
 		i++;
 	}
+
+	pa2m_afirmar(!lista_iterador_elemento_actual(iterador),
+		     "No se encuentran elementos que no existen");
 
 	lista_destruir(lista);
 	lista_iterador_destruir(iterador);
@@ -601,20 +605,20 @@ int main()
 {
 	pa2m_nuevo_grupo("----------- PRUEBAS DEL TP: TDA-LISTA -----------");
 
-	//pa2m_nuevo_grupo("--- PRUEBAS DEL TDA-LISTA ---");
-	//pruebas_del_tda_lista();
-	//printf("\n");
+	pa2m_nuevo_grupo("--- PRUEBAS DEL TDA-LISTA ---");
+	pruebas_del_tda_lista();
+	printf("\n");
 
 	pa2m_nuevo_grupo("---PRUEBAS DEL ITERADOR EXTERNO");
 	pruebas_del_iterador_externo_de_la_lista();
 	printf("\n");
 
-	//pa2m_nuevo_grupo("--- PRUEBAS DEL TDA-COLA ---");
-	//pruebas_del_tda_cola();
-	//printf("\n");
+	pa2m_nuevo_grupo("--- PRUEBAS DEL TDA-COLA ---");
+	pruebas_del_tda_cola();
+	printf("\n");
 
-	//pa2m_nuevo_grupo("--- PRUEBAS DEL TDA-PILA ---");
-	//pruebas_del_tda_pila();
+	pa2m_nuevo_grupo("--- PRUEBAS DEL TDA-PILA ---");
+	pruebas_del_tda_pila();
 
 	return pa2m_mostrar_reporte();
 }

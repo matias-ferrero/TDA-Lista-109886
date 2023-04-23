@@ -4,7 +4,7 @@
 
 # NOMBRE TP/TDA
 
-## Repositorio de (Nombre Apellido) - (Padrón) - (Mail)
+## Repositorio de Matias Ferrero - 109886 - mferreroc@fi.uba.ar
 
 - Para compilar:
 
@@ -57,4 +57,4 @@ vector_original = vector;
 ---
 
 ## Respuestas a las preguntas teóricas
-Incluír acá las respuestas a las preguntas del enunciado (si aplica).
+- ¿Qué es una lista/pila/cola? Explicar con diagramas.
