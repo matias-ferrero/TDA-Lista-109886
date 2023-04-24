@@ -36,6 +36,18 @@ La implementación hecha de la lista simplemente enlazada con los nodos, y por e
 <img width="70%" src="img/diagrama_memoria_lista.jpg">
 </div>
 
+Además, en caso de que a los elementos guardados se les asigne memoria dinamica, la tiene implementada un 
+destructor para liberar esa memoria en caso de quitar elementos,o destruir la lista, por lo que la 
+implementación de la lista también se hace cargo de no perder esa memoria, una vez se guarda en el TDA.
+
+Por otro lado, también se implementan el iterador interno y el iterador externo.
+El iterador interno recorre todos los nodos accediendo a la lista, aplicando a cada uno la función que reciba 
+por parámetros.
+En cambio, el iterador externo es otro TDA que tiene en su estructura un puntero a la lista del cual se 
+implementó, y un puntero al nodo al cual acceda. Itera los nodos uno a uno y le permite al usuario obtener el 
+elemento que inserta en la lista. Cabe destacar que el iterador se implementa en base a una lista en 
+particular, en caso de modificar la lista de cualquier manera, el iterador también se destruirá.
+
 ---
 ## Respuestas a las preguntas teóricas
 
@@ -89,7 +101,8 @@ frente.
 Las listas no tienen política LIFO o FIFO, por lo que se puede guardar, quitar o leer elementos en cualquier 
 posición.
 
-- Explica y analiza las diferencias de complejidad entre las implementaciones de lista simplemente enlazada, doblemente enlazada y vector dinámico para las operaciones:
+- Explica y analiza las diferencias de complejidad entre las implementaciones de lista simplemente enlazada, 
+doblemente enlazada y vector dinámico para las operaciones:
 
 Para implementar las listas, se utiliza una lista simplemente enlazada con nodos, pero para explicar cómo 
 funcionan es necesario entender qué es un nodo.
